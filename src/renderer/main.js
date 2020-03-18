@@ -1,6 +1,10 @@
 import Vue from 'vue'
 import axios from 'axios'
 
+import { BootstrapVue, IconsPlugin } from 'bootstrap-vue'
+Vue.use(BootstrapVue)
+Vue.use(IconsPlugin)
+
 import App from './App'
 import router from './router'
 
