@@ -1,11 +1,14 @@
 <template>
   <div class="d-flex flex-column">
-    <h3>
-      <span class="text-underline">{{ dockerInstances }}</span> RLM instances running.
-    </h3>
-    <h3>
-      <span class="text-underline">{{ composeServices }}</span> RLM instances desired.
-    </h3>
+    <div class="d-flex flex-row justify-content-between">
+      <h3>
+        <span class="text-underline">{{ dockerInstances }}</span> RLM instances running
+      </h3>
+      <h3>-</h3>
+      <h3>
+        <span class="text-underline">{{ composeServices }}</span> RLM instances desired
+      </h3>
+    </div>
     <button class="btn btn-primary" @click.prevent="scan">Refresh</button>
   </div>
 </template>

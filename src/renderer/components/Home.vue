@@ -1,6 +1,6 @@
 <template>
   <div class="container-fluid">
-    <h1>Red Giant RLM Manager</h1>
+    <h1 class="text-center">Red Giant RLM Manager</h1>
     <DockerCounter />
     <LaunchButton />
   </div>

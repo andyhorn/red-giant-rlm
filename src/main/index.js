@@ -1,6 +1,10 @@
 'use strict'
 
 import { app, BrowserWindow, ipcMain } from 'electron'
+const FilePaths = require('./contracts/FilePaths');
+const CountDockerInstances = require('./helpers/CountDockerInstances').default;
+const SetUpFiles = require('./helpers/SetUpFiles').default;
+const ComposeManager = require('./helpers/ComposeManager').default;
 
 /**
  * Set `__static` path to static files in production
@@ -71,10 +75,18 @@ app.on('ready', () => {
  */
 
  ipcMain.on("createService", (e, data) => {
-   console.log(data);
+  console.log(data);
+  console.log("Creating composer manager");
+  let manager = new ComposeManager(FilePaths.dockerComposeDest);
+  console.log("Adding new service with name: " + data.orgName);
+  manager.addService(data.orgName);
+  manager.saveFile();
  });
 
- ipcMain.on("dockerCountRequest", (e) => {
-   console.log("request received, sending 10");
-   e.reply("dockerCountResponse", 10);
- })
+ ipcMain.on("dockerCountRequest", async (e) => {
+   var num = await CountDockerInstances();
+   console.log(`request received, sending ${num}`);
+   e.reply("dockerCountResponse", num);
+ });
+
+SetUpFiles();
