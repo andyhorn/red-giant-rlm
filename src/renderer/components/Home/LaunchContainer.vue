@@ -1,23 +1,21 @@
 <template>
-  <div>
-    <form @submit.prevent="launch">
+  <div class="mt-3">
+    <form @submit.prevent="launch" class="form">
       <div class="form-group">
         <label>Org Name</label>
-        <input v-model="orgName" />
+        <input v-model="orgName" class="form-control"/>
       </div>
-      <div class="form-group">
-        <label>License Files</label>
-        <input type="file" />
+      <div class="custom-file mb-2">
+        <label class="custom-file-label">License Files</label>
+        <input type="file" class="custom-file-input"/>
       </div>
-      <input type="submit" value="Start!" />
+      <input class="btn btn-primary" type="submit" value="Start!" />
     </form>
   </div>
 </template>
 
 <script>
-const Docker = require("dockerode");
-const path = require('path');
-const yaml = require('yaml');
+const { ipcRenderer } = require('electron');
 
 export default {
   name: "launch-container",
@@ -28,7 +26,7 @@ export default {
   },
   methods: {
     launch() {
-      
+      ipcRenderer.send("createService", {orgName: this.orgName, files: []});
     }
   }
 };

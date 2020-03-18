@@ -1,6 +1,6 @@
 'use strict'
 
-import { app, BrowserWindow } from 'electron'
+import { app, BrowserWindow, ipcMain } from 'electron'
 
 /**
  * Set `__static` path to static files in production
@@ -69,3 +69,12 @@ app.on('ready', () => {
   if (process.env.NODE_ENV === 'production') autoUpdater.checkForUpdates()
 })
  */
+
+ ipcMain.on("createService", (e, data) => {
+   console.log(data);
+ });
+
+ ipcMain.on("dockerCountRequest", (e) => {
+   console.log("request received, sending 10");
+   e.reply("dockerCountResponse", 10);
+ })
