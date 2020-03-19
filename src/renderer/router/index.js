@@ -11,6 +11,11 @@ export default new Router({
       component: require('@/components/Home').default
     },
     {
+      path: 'service',
+      name: 'service-status',
+      component: require('@/components/Status').default
+    },
+    {
       path: '*',
       redirect: '/'
     }

@@ -11,7 +11,7 @@
         <h4>
           <ul class="list-unstyled d-flex flex-row flex-wrap justify-content-around">
             <li v-for="service in composeServices" :key="service" class="mx-2">
-              <a @click="stats(service)">{{ service }}</a>
+              <router-link :to="{ name: 'service-status', query: { name: service }}">{{ service }}</router-link>
             </li>
           </ul>
         </h4>
@@ -41,7 +41,8 @@ export default {
     },
     stats(service) {
       console.log(`${service} stats requested`);
-      ipcRenderer.send(IPC.SERVICE_STATUS_REQUEST, service);
+      // ipcRenderer.send(IPC.SERVICE_STATUS_REQUEST, service);
+
     }
   },
   mounted() {

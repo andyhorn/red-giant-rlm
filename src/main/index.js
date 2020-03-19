@@ -1,6 +1,7 @@
 'use strict'
 
 import { app, BrowserWindow, ipcMain } from 'electron'
+import { stat } from 'fs';
 const FilePaths = require('./contracts/FilePaths');
 const CountDockerInstances = require('./helpers/CountDockerInstances').default;
 const SetUpFiles = require('./helpers/SetUpFiles').default;
@@ -20,10 +21,14 @@ if (process.env.NODE_ENV !== 'development') {
   global.__static = require('path').join(__dirname, '/static').replace(/\\/g, '\\\\')
 }
 
-let mainWindow
+let mainWindow;
+let statusWindow;
+
 const winURL = process.env.NODE_ENV === 'development'
   ? `http://localhost:9080`
   : `file://${__dirname}/index.html`
+
+const statusURL = `file://${__dirname}/status.html`
 
 function createWindow() {
   /**
@@ -132,6 +137,7 @@ ipcMain.on(IPC.SERVICE_STATUS_REQUEST, (e, data) => {
       console.log(composeData);
       console.log("docker data:");
       console.log(dockerData);
+      e.reply(IPC.SERVICE_STATUS_RESPONSE, {composeData, dockerData});
     });
 });
 
