@@ -4,7 +4,11 @@ import { app, BrowserWindow, ipcMain } from 'electron'
 const FilePaths = require('./contracts/FilePaths');
 const CountDockerInstances = require('./helpers/CountDockerInstances').default;
 const SetUpFiles = require('./helpers/SetUpFiles').default;
+const DockerManager = require('./helpers/DockerManager');
+const FileManager = require('./helpers/FileManager');
 const ComposeManager = require('./helpers/ComposeManager').default;
+
+SetUpFiles();
 const composeManager = new ComposeManager(FilePaths.dockerComposeDest);
 
 /**
@@ -20,7 +24,7 @@ const winURL = process.env.NODE_ENV === 'development'
   ? `http://localhost:9080`
   : `file://${__dirname}/index.html`
 
-function createWindow () {
+function createWindow() {
   /**
    * Initial window options
    */
@@ -75,30 +79,42 @@ app.on('ready', () => {
 })
  */
 
- ipcMain.on("createService", (e, data) => {
+ipcMain.on("createService", async (e, data) => {
   console.log("Adding new service with name: " + data.orgName);
   console.log(data);
 
   if (composeManager.addService(data.orgName)) {
     composeManager.saveFile();
     updateServiceNames();
+    FileManager.CopyLicenseFiles(data.orgName, data.files);
+    DockerManager.launchService(data.orgName)
+      .then(data => {
+        console.log("Docker launch success!");
+        console.log(data);
+        updateDockerCount();
+      })
+      .catch(err => {
+        console.log("Docker launch failed!");
+        console.log(err);
+      });
   }
- });
+});
 
- ipcMain.on("dockerCountRequest", async (e) => {
-   var num = await CountDockerInstances();
-   console.log(`request received, sending ${num}`);
-   e.reply("dockerCountResponse", num);
- });
+ipcMain.on("dockerCountRequest", async (e) => {
+  updateDockerCount();
+});
 
- ipcMain.on("serviceNamesRequest", (e) => {
-   updateServiceNames();
- });
+ipcMain.on("serviceNamesRequest", (e) => {
+  updateServiceNames();
+});
 
- function updateServiceNames() {
+function updateServiceNames() {
   composeManager.refresh();
   let services = composeManager.serviceNames();
   mainWindow.webContents.send("serviceNamesResponse", services);
- }
+}
 
-SetUpFiles();
+async function updateDockerCount() {
+  var num = await CountDockerInstances();
+  mainWindow.webContents.send("dockerCountResponse", num);
+}

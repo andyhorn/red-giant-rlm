@@ -7,6 +7,7 @@ export default class {
 
     Make(orgName) {
         let ports = getPorts();
+        let webPort = ports[1].split(":")[0];
         let newService = new Service();
 
         newService.name = orgName;
@@ -20,8 +21,8 @@ export default class {
             args: [`ORG=${orgName}`]
         };
         newService.healthcheck = {
-            test: "CMD curl -f http://localhost:5054",
-            interval: "5m",
+            test: `CMD curl -f http://localhost:5054`,
+            interval: "2m",
             timeout: "10s",
             retries: 3
         };

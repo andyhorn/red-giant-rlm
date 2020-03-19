@@ -4,7 +4,7 @@ RUN apt-get update && apt-get install -y wget iproute2 curl
 
 WORKDIR /usr/bin/rlm
 
-COPY ./rlm .
+COPY ./rlmAssets .
 
 ARG ORG
 
