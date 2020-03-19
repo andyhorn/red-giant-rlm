@@ -7,6 +7,7 @@ const SetUpFiles = require('./helpers/SetUpFiles').default;
 const DockerManager = require('./helpers/DockerManager');
 const FileManager = require('./helpers/FileManager');
 const ComposeManager = require('./helpers/ComposeManager').default;
+const IPC = require('./contracts/Ipc');
 
 SetUpFiles();
 const composeManager = new ComposeManager(FilePaths.dockerComposeDest);
@@ -87,34 +88,60 @@ ipcMain.on("createService", async (e, data) => {
     composeManager.saveFile();
     updateServiceNames();
     FileManager.CopyLicenseFiles(data.orgName, data.files);
-    DockerManager.launchService(data.orgName)
-      .then(data => {
-        console.log("Docker launch success!");
-        console.log(data);
-        updateDockerCount();
-      })
-      .catch(err => {
-        console.log("Docker launch failed!");
-        console.log(err);
-      });
+    launchService(data.orgName);
   }
 });
 
-ipcMain.on("dockerCountRequest", async (e) => {
+function launchService(orgName) {
+  DockerManager.launchService(orgName)
+    .then(data => {
+      console.log(`${orgName} launched!`);
+      console.log(data);
+      updateDockerCount();
+    })
+    .catch(err => {
+      console.log(`${orgName} failed to launch...`);
+      console.log(err);
+    })
+}
+
+ipcMain.on(IPC.DOCKER_COUNT_REQUEST, async (e) => {
   updateDockerCount();
 });
 
-ipcMain.on("serviceNamesRequest", (e) => {
+ipcMain.on(IPC.SERVICE_NAMES_REQUEST, (e) => {
   updateServiceNames();
+});
+
+ipcMain.on(IPC.SERVICE_STATUS_REQUEST, (e, data) => {
+  let serviceName = data;
+  console.log(`getting service stats for ${data}`);
+  let composeData = composeManager.getService(serviceName);
+  let dockerData = null;
+  DockerManager.GetStats(serviceName)
+    .then(service => {
+      console.log(service);
+      dockerData = service;
+    })
+    .catch(err => {
+      console.log("Service stats error:");
+      console.log(err);
+    })
+    .finally(() => {
+      console.log("compose data:");
+      console.log(composeData);
+      console.log("docker data:");
+      console.log(dockerData);
+    });
 });
 
 function updateServiceNames() {
   composeManager.refresh();
   let services = composeManager.serviceNames();
-  mainWindow.webContents.send("serviceNamesResponse", services);
+  mainWindow.webContents.send(IPC.SERVICE_NAMES_RESPONSE, services);
 }
 
 async function updateDockerCount() {
   var num = await CountDockerInstances();
-  mainWindow.webContents.send("dockerCountResponse", num);
+  mainWindow.webContents.send(IPC.DOCKER_COUNT_RESPONSE, num);
 }

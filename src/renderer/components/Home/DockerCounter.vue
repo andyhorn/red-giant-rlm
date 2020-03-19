@@ -11,12 +11,12 @@
         <h4>
           <ul class="list-unstyled d-flex flex-row flex-wrap justify-content-around">
             <li v-for="service in composeServices" :key="service" class="mx-2">
-              {{ service }}
+              <a @click="stats(service)">{{ service }}</a>
             </li>
           </ul>
         </h4>
       </div>
-      
+
     </div>
     <button class="btn btn-primary" @click.prevent="scan">Refresh</button>
   </div>
@@ -24,6 +24,7 @@
 
 <script>
 const { ipcRenderer } = require('electron');
+const IPC = require('../../../main/contracts/Ipc');
 
 export default {
   name: "docker-counter",
@@ -35,17 +36,21 @@ export default {
   },
   methods: {
     scan() {
-      ipcRenderer.send("dockerCountRequest");
-      ipcRenderer.send("serviceNamesRequest");
+      ipcRenderer.send(IPC.DOCKER_COUNT_REQUEST);
+      ipcRenderer.send(IPC.SERVICE_NAMES_REQUEST);
+    },
+    stats(service) {
+      console.log(`${service} stats requested`);
+      ipcRenderer.send(IPC.SERVICE_STATUS_REQUEST, service);
     }
   },
   mounted() {
     // scan for docker instances
     this.scan();
-    ipcRenderer.on("dockerCountResponse", (e, data) => {
+    ipcRenderer.on(IPC.DOCKER_COUNT_RESPONSE, (e, data) => {
       this.dockerInstances = data;
     });
-    ipcRenderer.on("serviceNamesResponse", (e, data) => {
+    ipcRenderer.on(IPC.SERVICE_NAMES_RESPONSE, (e, data) => {
       this.composeServices = data;
     })
   }

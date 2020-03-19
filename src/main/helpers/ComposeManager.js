@@ -89,6 +89,13 @@ export default class {
         return names;
     }
 
+    getService(serviceName) {
+        if (this.services.length) {
+            let service = this.services.find(s => s.name == serviceName);
+            return service;
+        }
+    }
+
     refresh() {
         this.parse(this.filePath);
     }
