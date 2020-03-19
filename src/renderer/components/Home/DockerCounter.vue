@@ -1,13 +1,22 @@
 <template>
-  <div class="d-flex flex-column">
-    <div class="d-flex flex-row justify-content-between">
-      <h3>
-        <span class="text-underline">{{ dockerInstances }}</span> RLM instances running
-      </h3>
-      <h3>-</h3>
-      <h3>
-        <span class="text-underline">{{ composeServices }}</span> RLM instances desired
-      </h3>
+  <div class="d-flex flex-column border rounded p-2">
+    <div class="d-flex flex-row justify-content-around">
+      <div class="text-center">
+        <h3>Running:</h3>
+        <h4>{{ dockerInstances }}</h4>
+      </div>
+
+      <div class="text-center">
+        <h3>Configured:</h3>
+        <h4>
+          <ul class="list-unstyled d-flex flex-row flex-wrap justify-content-around">
+            <li v-for="service in composeServices" :key="service" class="mx-2">
+              {{ service }}
+            </li>
+          </ul>
+        </h4>
+      </div>
+      
     </div>
     <button class="btn btn-primary" @click.prevent="scan">Refresh</button>
   </div>
@@ -27,6 +36,7 @@ export default {
   methods: {
     scan() {
       ipcRenderer.send("dockerCountRequest");
+      ipcRenderer.send("serviceNamesRequest");
     }
   },
   mounted() {
@@ -34,6 +44,9 @@ export default {
     this.scan();
     ipcRenderer.on("dockerCountResponse", (e, data) => {
       this.dockerInstances = data;
+    });
+    ipcRenderer.on("serviceNamesResponse", (e, data) => {
+      this.composeServices = data;
     })
   }
 };

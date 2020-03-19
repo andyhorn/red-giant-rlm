@@ -1,8 +1,5 @@
-const yaml = require('yaml');
-
 export default class Service {
-    constructor(data) {
-        // this.data = data;
+    constructor() {
         this.name = '';
         this.container_name = '';
         this.ports = [];
@@ -20,31 +17,12 @@ export default class Service {
             retries: null
         };
         this.restart = '';
-
-        // if (data) {
-        //     this.parse(data);
-        // }
     }
-
-    // parse(data) {
-    //     console.log(data);
-    //     // data = yaml.parse(data);
-    //     this.name = data.name;
-    //     this.data = data;
-    //     console.log(data);
-    //     this.container_name = data.container_name;
-    //     this.ports = data.ports;
-    //     this.hostname = data.hostname;
-    //     this.mac_address = data.mac_address;
-    //     this.build = data.build;
-    //     this.healthcheck = data.healthcheck;
-    //     this.restart = data.restart;
-    // }
 
     toString() {
         let rawData = {
             container_name: this.container_name,
-            ports: this.ports,
+            ports: this.ports.map(p => String(p)),
             hostname: this.hostname,
             mac_address: this.mac_address,
             build: {
@@ -62,8 +40,5 @@ export default class Service {
         };
 
         return rawData;
-
-        // let yamlData = yaml.stringify(rawData);
-        // return yamlData;
     }
 }

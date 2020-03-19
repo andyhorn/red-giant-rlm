@@ -1,5 +1,6 @@
 <template>
   <div class="mt-3">
+    <h3>Launch new server</h3>
     <form @submit.prevent="launch" class="form">
       <div class="form-group">
         <label>Org Name</label>

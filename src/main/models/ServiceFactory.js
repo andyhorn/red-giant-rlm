@@ -10,7 +10,7 @@ export default class {
         let newService = new Service();
 
         newService.name = orgName;
-        newService.container_name = `rlm_${orgName}`;
+        newService.container_name = `rlm-${orgName}`;
         newService.ports = ports;
         newService.hostname = orgName;
         newService.mac_address = "12:34:56:78:90:AB";
@@ -20,7 +20,7 @@ export default class {
             args: [`ORG=${orgName}`]
         };
         newService.healthcheck = {
-            test: `["CMD", "curl", "-f", "http://localhost:5054"]`,
+            test: "CMD curl -f http://localhost:5054",
             interval: "5m",
             timeout: "10s",
             retries: 3
@@ -31,6 +31,7 @@ export default class {
 
     Parse(data) {
         let newService = new Service();
+        console.log(data);
 
         newService.name = data.name;
         newService.container_name = data.container_name;
@@ -39,7 +40,13 @@ export default class {
         newService.mac_address = data.mac_address;
         newService.build = data.build;
         newService.healthcheck = data.healthcheck;
-        newService.healthcheck.test = `[${newService.healthcheck.test.map(x => "'" + x + "'").join(",")}]`;
+
+        console.log(typeof(data.healthcheck.test));
+        if (typeof(data.healthcheck.test) != "string") {
+            data.healthcheck.test = data.healthcheck.test.join(' ');
+        }
+
+        newService.healthcheck.test = data.healthcheck.test;
         newService.restart = data.restart;
 
         return newService;

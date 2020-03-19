@@ -5,6 +5,7 @@ const FilePaths = require('./contracts/FilePaths');
 const CountDockerInstances = require('./helpers/CountDockerInstances').default;
 const SetUpFiles = require('./helpers/SetUpFiles').default;
 const ComposeManager = require('./helpers/ComposeManager').default;
+const composeManager = new ComposeManager(FilePaths.dockerComposeDest);
 
 /**
  * Set `__static` path to static files in production
@@ -75,12 +76,13 @@ app.on('ready', () => {
  */
 
  ipcMain.on("createService", (e, data) => {
-  console.log(data);
-  console.log("Creating composer manager");
-  let manager = new ComposeManager(FilePaths.dockerComposeDest);
   console.log("Adding new service with name: " + data.orgName);
-  manager.addService(data.orgName);
-  manager.saveFile();
+  console.log(data);
+
+  if (composeManager.addService(data.orgName)) {
+    composeManager.saveFile();
+    updateServiceNames();
+  }
  });
 
  ipcMain.on("dockerCountRequest", async (e) => {
@@ -88,5 +90,15 @@ app.on('ready', () => {
    console.log(`request received, sending ${num}`);
    e.reply("dockerCountResponse", num);
  });
+
+ ipcMain.on("serviceNamesRequest", (e) => {
+   updateServiceNames();
+ });
+
+ function updateServiceNames() {
+  composeManager.refresh();
+  let services = composeManager.serviceNames();
+  mainWindow.webContents.send("serviceNamesResponse", services);
+ }
 
 SetUpFiles();
