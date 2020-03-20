@@ -11,7 +11,7 @@ export default class {
         let newService = new Service();
 
         newService.name = orgName;
-        newService.container_name = `rlm-${orgName}`;
+        newService.container_name = `rlm_${orgName}`;
         newService.ports = ports;
         newService.hostname = orgName;
         newService.mac_address = "12:34:56:78:90:AB";
@@ -21,7 +21,7 @@ export default class {
             args: [`ORG=${orgName}`]
         };
         newService.healthcheck = {
-            test: `CMD curl -f http://localhost:5054`,
+            test: `curl -f localhost:5054 || exit 1`,
             interval: "2m",
             timeout: "10s",
             retries: 3

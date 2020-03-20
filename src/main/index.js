@@ -93,16 +93,19 @@ ipcMain.on("createService", async (e, data) => {
     composeManager.saveFile();
     updateServiceNames();
     FileManager.CopyLicenseFiles(data.orgName, data.files);
-    launchService(data.orgName);
+    launchService(data.orgName, () => {
+      updateDockerCount();
+    });
   }
 });
 
-function launchService(orgName) {
-  DockerManager.launchService(orgName)
+function launchService(orgName, cb) {
+  DockerManager.StartService(orgName)
     .then(data => {
       console.log(`${orgName} launched!`);
       console.log(data);
-      updateDockerCount();
+      // updateDockerCount();
+      cb();
     })
     .catch(err => {
       console.log(`${orgName} failed to launch...`);
@@ -118,27 +121,38 @@ ipcMain.on(IPC.SERVICE_NAMES_REQUEST, (e) => {
   updateServiceNames();
 });
 
-ipcMain.on(IPC.SERVICE_STATUS_REQUEST, (e, data) => {
-  let serviceName = data;
-  console.log(`getting service stats for ${data}`);
-  let composeData = composeManager.getService(serviceName);
-  let dockerData = null;
-  DockerManager.GetStats(serviceName)
-    .then(service => {
-      console.log(service);
-      dockerData = service;
+ipcMain.on(IPC.SERVICE_STATUS_REQUEST, async (e, name) => {
+  console.log(`getting service stats for ${name}`);
+  let composeData = composeManager.getService(name);
+  DockerManager.GetContainer("rlm_" + name)
+    .then(container => {
+      console.log("returning docker and compose data");
+      mainWindow.webContents.send(IPC.SERVICE_STATUS_RESPONSE, { composeData, dockerData: container });
     })
-    .catch(err => {
-      console.log("Service stats error:");
-      console.log(err);
-    })
-    .finally(() => {
-      console.log("compose data:");
-      console.log(composeData);
-      console.log("docker data:");
-      console.log(dockerData);
-      e.reply(IPC.SERVICE_STATUS_RESPONSE, {composeData, dockerData});
+    .catch(() => {
+      console.log("returning only compose data");
+      mainWindow.webContents.send(IPC.SERVICE_STATUS_RESPONSE, { composeData });
     });
+});
+
+ipcMain.on(IPC.START_DOCKER_REQUEST, (e, name) => {
+  console.log(`starting service: ${name}`);
+  launchService(name, () => {
+    e.reply(IPC.START_DOCKER_RESPONSE);
+  });
+});
+
+ipcMain.on(IPC.STOP_DOCKER_REQUEST, (e, name) => {
+  try {
+    DockerManager.StopService(name)
+      .then(() => {
+        updateDockerCount();
+        e.reply(IPC.STOP_DOCKER_RESPONSE);
+      });
+  }
+  catch (e) {
+    return false;
+  }
 });
 
 function updateServiceNames() {

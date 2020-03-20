@@ -1,8 +1,13 @@
 const { exec } = require('child_process');
 const Docker = require('dockerode');
 
-export function launchService(orgName) {
-    var cmd = `docker-compose -f C:\\RLM\\docker-compose.yml up -d --build ${orgName}`;
+const BASE = "docker-compose -f C:\\RLM\\docker-compose.yml";
+const BUILD = BASE + " up -d --build";
+const STOP = BASE + " stop";
+
+export function StartService(orgName) {
+    // var cmd = `docker-compose -f C:\\RLM\\docker-compose.yml up -d --build ${orgName}`;
+    let cmd = `${BUILD} ${orgName}`;
     return new Promise((resolve, reject) => {
         exec(cmd, (err, stdout, stderr) => {
             if (err) {
@@ -19,21 +24,43 @@ export function launchService(orgName) {
     });
 }
 
-export function GetStats(name) {
+export function GetContainer(name) {
+    let docker = new Docker();
     return new Promise((resolve, reject) => {
-        let docker = new Docker();
         docker.listContainers()
             .then(containers => {
+                console.log("Containers:")
+                console.log(containers);
                 if (containers.length == 0) {
                     return reject("No containers found");
                 }
+                
+                console.log(`Searching for Image "${name}"`);
+                let container = containers.find(c => c.Image == name);
+                console.log(container);
 
-                let service = containers.find(c => c.name == name);
-                if (service == null) {
-                    return reject(`Container ${name} not found`);
+                if (container == null) {
+                    return reject(`Container "${name}" not found`);
                 }
 
-                return resolve(service);
+                console.log("Returning container");
+                return resolve(container);
             });
+    });
+}
+
+export function StopService(name) {
+    let cmd = `${STOP} ${name}`;
+    console.log(`stopping service "${name}"`);
+    console.log(cmd);
+    
+    return new Promise((resolve, reject) => {
+        exec(cmd, (err, stdout, stderr) => {
+            if (err) {
+                return reject(err);
+            }
+
+            return resolve(stdout);
+        });
     });
 }
