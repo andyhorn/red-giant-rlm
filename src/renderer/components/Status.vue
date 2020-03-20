@@ -1,6 +1,7 @@
 <template>
     <div class="container-fluid">
         <router-link :to="{ path: 'home-page' }">Back</router-link>
+        <a href="#" @click="getStatus">Refresh</a>
         <Configuration v-if="showConfig" :data="composeData" />
         <Docker v-if="showDocker" :data="dockerData" :name="composeData.name" />
     </div>    
@@ -30,7 +31,7 @@ export default {
     methods: {
         getStatus() {
             ipcRenderer.send(IPC.SERVICE_STATUS_REQUEST, this.name);
-        }
+        },
     },
     mounted() {
         this.name = this.$route.query.name;

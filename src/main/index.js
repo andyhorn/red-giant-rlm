@@ -104,7 +104,6 @@ function launchService(orgName, cb) {
     .then(data => {
       console.log(`${orgName} launched!`);
       console.log(data);
-      // updateDockerCount();
       cb();
     })
     .catch(err => {
@@ -143,17 +142,35 @@ ipcMain.on(IPC.START_DOCKER_REQUEST, (e, name) => {
 });
 
 ipcMain.on(IPC.STOP_DOCKER_REQUEST, (e, name) => {
+  stopService(name);
+});
+
+ipcMain.on(IPC.REMOVE_SERVICE_REQUEST, async (e, name) => {
+  await stopService(name);
+  composeManager.removeService("rlm_" + name);
+  composeManager.saveFile();
+  updateServiceNames();
+});
+
+async function stopService(name) {
   try {
-    DockerManager.StopService(name)
-      .then(() => {
-        updateDockerCount();
-        e.reply(IPC.STOP_DOCKER_RESPONSE);
-      });
+    await DockerManager.StopService(name);
+    updateDockerCount();
+    mainWindow.webContents.send(IPC.STOP_DOCKER_RESPONSE);
   }
   catch (e) {
-    return false;
+
   }
-});
+  // let result = DockerManager.StopService(name);
+  //   .then(() => {
+  //     updateDockerCount();
+  //     mainWindow.webContents.send(IPC.STOP_DOCKER_RESPONSE);
+  //     return true;
+  //   })
+  //   .catch(() => {
+  //     return false;
+  //   });
+}
 
 function updateServiceNames() {
   composeManager.refresh();

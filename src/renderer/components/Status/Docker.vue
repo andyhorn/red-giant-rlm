@@ -24,10 +24,16 @@
         <div v-else>
             <p>Container not running.</p>
         </div>
-        <div class="my-2">
-            <button @click="restart" class="btn btn-success">Start/Restart</button>
-            <button @click="stop" class="btn btn-danger">Stop</button>
+        <div class="d-flex flex-row justify-content-between mb-3">
+            <div class="d-flex flex-row justify-content-left">
+                <button @click="restart" class="btn btn-success mx-1">Start/Restart</button>
+                <button @click="stop" class="btn btn-danger mx-1">Stop</button>
+            </div>
+            <div class="px-2">
+                <button @click="remove" class="btn btn-block btn-danger mx-1">Remove</button>
+            </div>
         </div>
+        
     </div>
 </template>
 
@@ -44,6 +50,10 @@ export default {
         },
         stop() {
             ipcRenderer.send(IPC.STOP_DOCKER_REQUEST, this.name);
+        },
+        remove() {
+            ipcRenderer.send(IPC.REMOVE_SERVICE_REQUEST, this.name);
+            this.$route.push({name: 'home-page'});
         }
     }
 }

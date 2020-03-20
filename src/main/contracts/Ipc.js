@@ -12,3 +12,6 @@ module.exports.START_DOCKER_RESPONSE = "startDockerResponse";
 
 module.exports.STOP_DOCKER_REQUEST = "stopDockerRequest";
 module.exports.STOP_DOCKER_RESPONSE = "stopDockerResponse";
+
+module.exports.REMOVE_SERVICE_REQUEST = "removeServiceRequest";
+module.exports.REMOVE_SERVICE_RESPONSE = "removeServiceResponse";

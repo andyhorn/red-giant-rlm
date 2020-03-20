@@ -96,6 +96,18 @@ export default class {
         }
     }
 
+    removeService(name) {
+        if (this.services.length) {
+            console.log(`searching for service: ${name}`);
+            console.log(this.services);
+            let index = this.services.indexOf(s => s.container_name == name);
+            console.log("service index: " + index);
+            if (index != null) {
+                this.services.splice(index, 1);
+            }
+        }
+    }
+
     refresh() {
         this.parse(this.filePath);
     }
