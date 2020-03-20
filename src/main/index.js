@@ -149,7 +149,9 @@ ipcMain.on(IPC.REMOVE_SERVICE_REQUEST, async (e, name) => {
   await stopService(name);
   composeManager.removeService("rlm_" + name);
   composeManager.saveFile();
-  updateServiceNames();
+  // updateServiceNames();
+  FileManager.RemoveLicenseFiles(name);
+  mainWindow.webContents.send(IPC.REMOVE_SERVICE_RESPONSE);
 });
 
 async function stopService(name) {

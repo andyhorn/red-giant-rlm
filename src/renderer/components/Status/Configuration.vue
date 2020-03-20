@@ -14,8 +14,13 @@
             <th>Ports</th>
             <td>
                 <ul class="list-unstyled">
-                    <li v-for="port in data.ports" :key="port">
-                        {{ port }}
+                    <li v-for="(port, index) in data.ports" :key="port">
+                        <div v-if="index == 1">
+                            <a href="#" @click="openWeb">{{ port }}</a>
+                        </div>
+                        <div v-else>
+                            {{ port }}
+                        </div>
                     </li>
                 </ul>
             </td>
@@ -25,9 +30,17 @@
 </template>
 
 <script>
+const { shell } = require('electron');
+
 export default {
   name: "configuration-status",
-  props: ["data"]
+  props: ["data"],
+  methods: {
+      openWeb() {
+          let port = this.data.ports[1].split(":")[0];
+          shell.openExternal(`http://localhost:${port}`);
+      }
+  }
 };
 </script>
 

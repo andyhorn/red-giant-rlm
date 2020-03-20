@@ -10,6 +10,7 @@ export default function(force = false) {
     copyFile(FilePaths.dockerfileAsset, FilePaths.dockerfileDest, force);
     copyFile(FilePaths.entrypointAsset, FilePaths.entrypointDest, force);
     copyFile(FilePaths.rlmExecutableAsset, FilePaths.rlmExecutableDest, force);
+    copyFile(FilePaths.redgiantSetAsset, FilePaths.redgiantSetDest, force);
 }
 
 function makeDir(dirPath) {

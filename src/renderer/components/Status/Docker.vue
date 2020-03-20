@@ -53,8 +53,12 @@ export default {
         },
         remove() {
             ipcRenderer.send(IPC.REMOVE_SERVICE_REQUEST, this.name);
-            this.$route.push({name: 'home-page'});
         }
+    },
+    mounted() {
+        ipcRenderer.on(IPC.REMOVE_SERVICE_RESPONSE, () => {
+            this.$router.push({ name: 'home-page' });
+        });
     }
 }
 </script>

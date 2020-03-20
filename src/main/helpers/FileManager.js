@@ -17,3 +17,11 @@ export function CopyLicenseFiles(orgName, fileList) {
         fs.copyFileSync(file, dest);
     }
 }
+
+export function RemoveLicenseFiles(name) {
+    let directory = path.join(FilePaths.licenseDirPath, name);
+
+    if (fs.existsSync(directory)) {
+        fs.rmdirSync(directory, { recursive: true });
+    }
+}
