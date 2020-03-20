@@ -38,17 +38,13 @@ export default {
     scan() {
       ipcRenderer.send(IPC.DOCKER_COUNT_REQUEST);
       ipcRenderer.send(IPC.SERVICE_NAMES_REQUEST);
-    },
-    stats(service) {
-      console.log(`${service} stats requested`);
-      // ipcRenderer.send(IPC.SERVICE_STATUS_REQUEST, service);
-
     }
   },
   mounted() {
     // scan for docker instances
     this.scan();
     ipcRenderer.on(IPC.DOCKER_COUNT_RESPONSE, (e, data) => {
+      console.log(`Received "${data}" number of containers`);
       this.dockerInstances = data;
     });
     ipcRenderer.on(IPC.SERVICE_NAMES_RESPONSE, (e, data) => {

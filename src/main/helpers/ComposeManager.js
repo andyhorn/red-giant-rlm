@@ -18,7 +18,7 @@ export default class {
 
         // Read the file data from the existing docker-compose.yaml file
         let fileData = fs.readFileSync(filePath, "utf-8");
-        console.log(fileData);
+        // console.log(fileData);
 
         // Parse the Yaml data into a JSON object
         let yamlData = yaml.parse(fileData);
@@ -39,13 +39,13 @@ export default class {
 
             // Loop through each service object
             for (let service of Object.keys(this.data.services)) {
-                console.log("Parsing service:");
-                console.log(service);
+                // console.log("Parsing service:");
+                // console.log(service);
 
                 // Get the service data
                 let serviceData = this.data.services[service];
-                console.log("Service data:");
-                console.log(serviceData);
+                // console.log("Service data:");
+                // console.log(serviceData);
 
                 // Pass the data to the ServiceFactory
                 let newService = factory.Parse(serviceData);
@@ -75,7 +75,7 @@ export default class {
             return true;
         }
         catch (e) {
-            console.log(e);
+            // console.log(e);
             return false;
         }
     }
@@ -99,9 +99,9 @@ export default class {
     removeService(name) {
         if (this.services.length) {
             console.log(`searching for service: ${name}`);
-            console.log(this.services);
+            // console.log(this.services);
             let index = this.services.indexOf(s => s.container_name == name);
-            console.log("service index: " + index);
+            // console.log("service index: " + index);
             if (index != null) {
                 this.services.splice(index, 1);
             }
@@ -139,7 +139,7 @@ export default class {
 
         // Convert the data object to a Yaml string
         let rawData = yaml.stringify(yamlData);
-        console.log(rawData);
+        // console.log(rawData);
 
         // Return the Yaml string
         return rawData;

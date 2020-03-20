@@ -37,7 +37,7 @@ export default {
         this.name = this.$route.query.name;
         let vm = this;
         ipcRenderer.on(IPC.SERVICE_STATUS_RESPONSE, (e, data) => {
-            console.log(data);
+            // console.log(data);
             vm.dockerData = data.dockerData || null;
             vm.composeData = data.composeData || null;
 

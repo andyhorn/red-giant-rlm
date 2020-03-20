@@ -17,6 +17,7 @@
 
 <script>
 const { ipcRenderer } = require('electron');
+const IPC = require('../../../main/contracts/Ipc');
 
 export default {
   name: "launch-container",
@@ -31,7 +32,7 @@ export default {
       let files = [...this.$refs.fileList.files].map(x => x.path);
 
       // Send the file paths and org name to the main Electron process
-      ipcRenderer.send("createService", { orgName: this.orgName, files: files });
+      ipcRenderer.send(IPC.CREATE_SERVICE_REQUEST, { orgName: this.orgName, files: files });
 
       // Clear the org name and file input
       this.orgName = "";

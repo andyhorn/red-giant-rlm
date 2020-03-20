@@ -15,3 +15,6 @@ module.exports.STOP_DOCKER_RESPONSE = "stopDockerResponse";
 
 module.exports.REMOVE_SERVICE_REQUEST = "removeServiceRequest";
 module.exports.REMOVE_SERVICE_RESPONSE = "removeServiceResponse";
+
+module.exports.CREATE_SERVICE_REQUEST = "createServiceRequest";
+module.exports.CREATE_SERVICE_RESPONSE = "createServiceResponse";
