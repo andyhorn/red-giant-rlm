@@ -24,4 +24,7 @@ export default function init () {
 
     // Handle the "Create Service" event
     ipcMain.on(IPC.CREATE_SERVICE_REQUEST, (e, data) => Handlers.handleCreateServiceRequest(data));
+
+    // Handle the "Docker Services" request
+    ipcMain.on(IPC.DOCKER_SERVICES_REQUEST, () => Handlers.handleDockerServicesRequest());
 }

@@ -1,7 +1,9 @@
 <template>
     <div class="container-fluid">
-        <router-link :to="{ path: 'home-page' }">Back</router-link>
-        <a href="#" @click="getStatus">Refresh</a>
+        <div class="m-0 p-1 border-bottom">
+            <router-link :to="{ path: 'home-page' }">Back</router-link> |
+            <a href="#" @click="getStatus">Refresh</a>
+        </div>
         <Configuration v-if="showConfig" :data="composeData" />
         <Docker v-if="showDocker" :data="dockerData" :name="composeData.name" />
     </div>    

@@ -26,7 +26,7 @@ export default class {
             timeout: "10s",
             retries: 3
         };
-        newService.restart = "always";
+        newService.restart = "unless-stopped";
         return newService;
     }
 

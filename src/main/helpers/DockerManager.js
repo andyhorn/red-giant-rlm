@@ -81,3 +81,30 @@ export function StopService(name) {
         });
     });
 }
+
+export function GetRunningContainers() {
+    let docker = new Docker();
+    return new Promise((resolve, reject) => {
+        docker.listContainers()
+            .then(containers => {
+                resolve(containers);
+            })
+            .catch(e => {
+                reject(e);
+            });
+    })
+}
+
+export function StopContainer(id) {
+    let docker = new Docker();
+    return new Promise((resolve, reject) => {
+        let container = docker.getContainer(id);
+        if (container) {
+            container.stop(() => {
+                resolve(true);
+            });
+        } else {
+            reject(false);
+        }
+    })
+}

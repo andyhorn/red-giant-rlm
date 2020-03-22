@@ -49,7 +49,7 @@ export default {
             ipcRenderer.send(IPC.START_DOCKER_REQUEST, this.name);
         },
         stop() {
-            ipcRenderer.send(IPC.STOP_DOCKER_REQUEST, this.name);
+            ipcRenderer.send(IPC.STOP_DOCKER_REQUEST, { isName: true, name: this.name });
         },
         remove() {
             ipcRenderer.send(IPC.REMOVE_SERVICE_REQUEST, this.name);

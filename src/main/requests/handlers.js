@@ -1,3 +1,5 @@
+import { sendDockerServicesResponse } from '../responses/response';
+
 const FilePaths = require('../contracts/FilePaths');
 const FileManager = require('../helpers/FileManager');
 const ComposeManager = require('../helpers/ComposeManager').default;
@@ -54,9 +56,14 @@ export async function handleStartDockerRequest(name) {
     }
 }
 
-export async function handleStopDockerRequest(name) {
+export async function handleStopDockerRequest(data) {
+    let stopped;
     // Stop the desired container
-    let stopped = await stopService(name);
+    if (data.isName) {
+        stopped = await stopService(data.name);
+    } else {
+        stopped = await stopContainer(data.id)
+    }
 
     // If stopped successfully, update the running
     // container count and trigger the "docker stopped" event
@@ -77,7 +84,7 @@ export async function handleCreateServiceRequest(data) {
     if (added) {
         console.log("Service added to Compose file");
         composeManager.saveFile();
-        updateServiceNames();
+        sendServiceNames();
 
         // Copy the license files to the organization folder
         console.log("Copying license files");
@@ -98,14 +105,21 @@ export async function handleCreateServiceRequest(data) {
 // Retrieve the currently configured service names
 // and send them with the "service names" event
 export function handleServiceNamesRequest() {
-    let services = getServiceNames();
-    Response.sendServiceNamesResponse(services);
+    sendServiceNames();
+    // let services = getServiceNames();
+    // Response.sendServiceNamesResponse(services);
 }
 
 // Retrieve the count of running Docker containers
 // and send them in the "docker count" event
 export async function handleDockerCountRequest() {
     sendDockerCount();
+}
+
+// Retrieve a list of running Docker containers
+export async function handleDockerServicesRequest() {
+    let services = await DockerManager.GetRunningContainers();
+    sendDockerServicesResponse(services);
 }
 
 /* HELPER FUNCTIONS */
@@ -115,6 +129,11 @@ export async function handleDockerCountRequest() {
 async function launchService(orgName) {
     let started = await DockerManager.StartService(orgName);
     return started;
+}
+
+async function sendServiceNames() {
+    let names = getServiceNames();
+    Response.sendServiceNamesResponse(names);
 }
 
 // Get the current number of running containers
@@ -134,6 +153,11 @@ function removeServiceFromCompose(name) {
 // Stop a desired service and return the success/fail result
 async function stopService(name) {
     let result = await DockerManager.StopService(name);
+    return result;
+}
+
+async function stopContainer(id) {
+    let result = await DockerManager.StopContainer(id);
     return result;
 }
 

@@ -16,6 +16,11 @@ export default new Router({
       component: require('@/components/Status').default
     },
     {
+      path: 'docker',
+      name: 'docker-instances',
+      component: require('@/components/DockerInstances').default
+    },
+    {
       path: '*',
       redirect: '/'
     }
