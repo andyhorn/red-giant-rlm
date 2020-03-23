@@ -5,6 +5,7 @@ const DOCKERFILE_FILENAME = "Dockerfile";
 const ENTRYPOINT_FILENAME = "entrypoint.sh";
 const RLM_EXECUTABLE_FILENAME = "rlm";
 const REDGIANT_SET_FILENAME = "redgiant.set";
+const ADD_ISV_FILENAME = "add-isv.py";
 
 var rlmDirPath = path.join("C:", "RLM");
 var rlmAssetsDirPath = path.join(rlmDirPath, "rlmAssets");
@@ -23,6 +24,7 @@ var dockerfileDest = path.join(rlmDirPath, DOCKERFILE_FILENAME);
 var entrypointDest = path.join(rlmAssetsDirPath, ENTRYPOINT_FILENAME);
 var rlmExecutableDest = path.join(rlmAssetsDirPath, RLM_EXECUTABLE_FILENAME);
 var redgiantSetDest = path.join(rlmAssetsDirPath, REDGIANT_SET_FILENAME);
+var addIsvScriptDest = path.join(rlmAssetsDirPath, ADD_ISV_FILENAME);
 
 module.exports.licenseDirPath = licenseDirPath;
 module.exports.rlmDirPath = rlmDirPath;
@@ -39,3 +41,4 @@ module.exports.dockerfileDest = dockerfileDest;
 module.exports.entrypointDest = entrypointDest;
 module.exports.rlmExecutableDest = rlmExecutableDest;
 module.exports.redgiantSetDest = redgiantSetDest;
+module.exports.addIsvScriptDest = addIsvScriptDest;
