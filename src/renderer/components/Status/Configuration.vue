@@ -1,48 +1,50 @@
 <template>
-  <div>
-    <h3>Configuration</h3>
-    <table class="table">
-        <tr>
-            <th>Name</th>
-            <td>{{ data.name }}</td>
-        </tr>
-        <tr>
-            <th>MAC Address</th>
-            <td>{{ data.mac_address }}</td>
-        </tr>
-        <tr>
-            <th>Ports</th>
-            <td>
-                <ul class="list-unstyled">
-                    <li v-for="(port, index) in data.ports" :key="port">
-                        <div v-if="index == 1">
-                            <a href="#" @click="openWeb">{{ port }}</a>
-                        </div>
-                        <div v-else>
-                            {{ port }}
-                        </div>
-                    </li>
-                </ul>
-            </td>
-        </tr>
-    </table>
-  </div>
+  <table class="table">
+    <thead>
+      <tr>
+        <th colspan="3">Configuration</th>
+      </tr>
+      <tr>
+        <th>Service Name</th>
+        <th>MAC Address</th>
+        <th>Ports</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>{{ compose.name }}</td>
+        <td>{{ compose.mac_address }}</td>
+        <td>
+          <ul class="list-unstyled">
+            <li v-for="(port, index) in compose.ports" :key="port">
+              <div v-if="index == 1">
+                <a href="#" @click="openWebPort">{{ port }}</a>
+              </div>
+              <div v-else>{{ port }}</div>
+            </li>
+          </ul>
+        </td>
+      </tr>
+    </tbody>
+  </table>
 </template>
 
 <script>
-const { shell } = require('electron');
+const { shell } = require("electron");
 
 export default {
-  name: "configuration-status",
-  props: ["data"],
+  name: "configuration",
+  props: ["compose"],
   methods: {
-      openWeb() {
-          let port = this.data.ports[1].split(":")[0];
-          shell.openExternal(`http://localhost:${port}`);
-      }
+    openWebPort() {
+      this.$emit("openWebPort");
+    }
   }
 };
 </script>
 
 <style scoped>
+table {
+    table-layout: fixed;
+}
 </style>

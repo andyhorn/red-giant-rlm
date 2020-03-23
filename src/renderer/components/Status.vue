@@ -4,22 +4,25 @@
             <router-link :to="{ path: 'home-page' }">Back</router-link> |
             <a href="#" @click="getStatus">Refresh</a>
         </div>
-        <Configuration v-if="showConfig" :data="composeData" />
-        <Docker v-if="showDocker" :data="dockerData" :name="composeData.name" />
+        <StatusTable 
+            :compose="composeData" 
+            :docker="dockerData" 
+            v-if="showConfig && showDocker"/>
+        <DockerControls :name="name" />
     </div>    
 </template>
 
 <script>
 const { ipcRenderer } = require('electron');
 const IPC = require('../../main/contracts/Ipc');
-const Configuration = require('./Status/Configuration').default;
-const Docker = require('./Status/Docker').default;
+const StatusTable = require('./Status/StatusTable').default;
+const DockerControls = require('./Status/DockerControls').default;
 
 export default {
     name: "service-status",
     components: {
-        Configuration,
-        Docker
+        StatusTable,
+        DockerControls
     },
     data() {
         return {
