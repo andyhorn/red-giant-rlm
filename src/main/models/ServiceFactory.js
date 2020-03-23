@@ -1,17 +1,14 @@
 const Service = require('./Service').default;
-const PortManager = require('./PortManager').default;
-const portManager = new PortManager();
 
 export default class {
     constructor() {}
 
     Make(orgName) {
-        let ports = getPorts();
         let newService = new Service();
 
         newService.name = orgName;
         newService.container_name = `rlm_${orgName}`;
-        newService.ports = ports;
+        newService.ports = [];
         newService.hostname = orgName;
         newService.mac_address = "12:34:56:78:90:AB";
         newService.build = {
@@ -49,9 +46,4 @@ export default class {
 
         return newService;
     }
-}
-
-function getPorts() {
-    let ports = portManager.getPorts();
-    return ports;
 }

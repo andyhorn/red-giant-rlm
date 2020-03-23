@@ -1,8 +1,8 @@
 const yaml = require('yaml');
 const fs = require('fs');
 const ServiceFactory = require('../models/ServiceFactory').default;
-// const DockerManager = require('../helpers/DockerManager');
 const factory = new ServiceFactory();
+const MINIMUM_PORT_NUMBER = 5000;
 
 export default class {
     constructor (filePath) {
@@ -14,11 +14,8 @@ export default class {
     }
 
     parse(filePath) {
-        // console.log(filePath);
-
         // Read the file data from the existing docker-compose.yaml file
         let fileData = fs.readFileSync(filePath, "utf-8");
-        // console.log(fileData);
 
         // Parse the Yaml data into a JSON object
         let yamlData = yaml.parse(fileData);
@@ -39,13 +36,9 @@ export default class {
 
             // Loop through each service object
             for (let service of Object.keys(this.data.services)) {
-                // console.log("Parsing service:");
-                // console.log(service);
 
                 // Get the service data
                 let serviceData = this.data.services[service];
-                // console.log("Service data:");
-                // console.log(serviceData);
 
                 // Pass the data to the ServiceFactory
                 let newService = factory.Parse(serviceData);
@@ -68,6 +61,8 @@ export default class {
         try {
             // Attempt to create the new Service object
             let service = factory.Make(orgName);
+            let ports = this.getPorts();
+            service.ports = ports;
 
             // Save the Service object to this class
             this.services.push(service);
@@ -75,9 +70,40 @@ export default class {
             return service;
         }
         catch (e) {
-            // console.log(e);
             return false;
         }
+    }
+
+    getPorts() {
+        console.log("Assigning ports");
+        let currentPorts = [];
+        this.services.forEach(s => {
+            let servicePorts = s.ports.map(p => p.split(":")[0]);
+            console.log(servicePorts);
+            currentPorts.push(...servicePorts);
+        });
+        console.log("Currently used ports:");
+        console.log(currentPorts);
+        let ports = [];
+        let port = MINIMUM_PORT_NUMBER;
+        for (let i = 0; i < 3; i++) {
+            
+            while (currentPorts.some(p => p == port)) {
+                console.log(`Port ${port} already taken`);
+                port += 1;
+            };
+
+            ports.push(port);
+            port += 1;
+        }
+
+        console.log("Ports chosen:");
+        console.log(ports);
+        return [
+            `${ports[0]}:5053`,
+            `${ports[1]}:5054`,
+            `${ports[2]}:${ports[2]}`
+        ];
     }
 
     serviceNames() {
@@ -99,9 +125,7 @@ export default class {
     removeService(name) {
         if (this.services.length) {
             console.log(`searching for service: ${name}`);
-            // console.log(this.services);
             let index = this.services.indexOf(s => s.container_name == name);
-            // console.log("service index: " + index);
             if (index != null) {
                 this.services.splice(index, 1);
             }
