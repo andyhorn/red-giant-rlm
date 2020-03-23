@@ -2,7 +2,7 @@
   <div class="container-fluid" v-if="showConfig && showDocker">
     <div class="m-0 p-1 border-bottom d-flex flex-row justify-content-between">
       <div>
-        <router-link :to="{ path: 'home-page' }">Back</router-link>|
+        <router-link :to="{ path: 'home-page' }">Back</router-link> |
         <a href="#" @click="getStatus">Refresh</a>
       </div>
       <a href="#" @click="generateLicense">Generate Client License</a>
@@ -41,7 +41,6 @@ export default {
   },
   methods: {
     getStatus() {
-      console.log("Getting stats");
       ipcRenderer.send(IPC.SERVICE_STATUS_REQUEST, this.name);
     },
     generateLicense() {

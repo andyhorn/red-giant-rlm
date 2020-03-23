@@ -103,6 +103,7 @@ export async function handleCreateServiceRequest(data) {
             // If launched successfully, trigger the 
             // "docker count" event
             console.log("Successfully launched!");
+            Response.sendStartDockerResponse();
             sendDockerCount();
         }
     }
