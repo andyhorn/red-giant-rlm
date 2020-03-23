@@ -77,11 +77,11 @@ export async function handleCreateServiceRequest(data) {
     console.log("Adding new service with name: " + data.orgName);
 
     // Add a new service to the compose file
-    let added = composeManager.addService(data.orgName);
+    let service = composeManager.addService(data.orgName);
 
     // If successfully added, save the compose file data
     // and trigger the "update service names" event
-    if (added) {
+    if (service) {
         console.log("Service added to Compose file");
         composeManager.saveFile();
         sendServiceNames();
@@ -89,6 +89,11 @@ export async function handleCreateServiceRequest(data) {
         // Copy the license files to the organization folder
         console.log("Copying license files");
         FileManager.CopyLicenseFiles(data.orgName, data.files);
+
+        let port = service.ports[2].split(":")[1];
+        console.log(`Setting ISV port to ${port}`);
+        let result = FileManager.UpdateIsv(data.orgName, port);
+        console.log(result);
 
         // Launch the new service
         console.log("Launching new service...");

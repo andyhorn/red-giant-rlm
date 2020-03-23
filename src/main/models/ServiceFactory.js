@@ -7,7 +7,6 @@ export default class {
 
     Make(orgName) {
         let ports = getPorts();
-        // let webPort = ports[1].split(":")[0];
         let newService = new Service();
 
         newService.name = orgName;
@@ -32,7 +31,6 @@ export default class {
 
     Parse(data) {
         let newService = new Service();
-        // console.log(data);
 
         newService.name = data.name;
         newService.container_name = data.container_name;
@@ -42,7 +40,6 @@ export default class {
         newService.build = data.build;
         newService.healthcheck = data.healthcheck;
 
-        // console.log(typeof(data.healthcheck.test));
         if (typeof(data.healthcheck.test) != "string") {
             data.healthcheck.test = data.healthcheck.test.join(' ');
         }

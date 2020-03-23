@@ -72,7 +72,7 @@ export default class {
             // Save the Service object to this class
             this.services.push(service);
 
-            return true;
+            return service;
         }
         catch (e) {
             // console.log(e);
