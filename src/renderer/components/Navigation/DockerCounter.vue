@@ -10,9 +10,7 @@
         <p class="m-0 p-1"><strong>Configured</strong></p>
         <ul class="list-unstyled pl-1">
           <li v-for="service in composeServices" :key="service">
-            <router-link :to="{ name: 'service-status', query: { name: service }}">
-              {{ service }}
-            </router-link>
+            <a href="#" @click="open(service)">{{ service }}</a>
           </li>
         </ul>
       </div>
@@ -35,6 +33,9 @@ export default {
     };
   },
   methods: {
+    open(name) {
+      this.$router.push({name: 'service-status', query: {name: name}});
+    },
     scan() {
       ipcRenderer.send(IPC.DOCKER_COUNT_REQUEST);
       ipcRenderer.send(IPC.SERVICE_NAMES_REQUEST);

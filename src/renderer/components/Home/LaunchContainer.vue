@@ -31,16 +31,24 @@ export default {
       // Get the full path for each file selected
       let files = [...this.$refs.fileList.files].map(x => x.path);
 
+      let name = this.formatOrgName(this.orgName);
+
       // Send the file paths and org name to the main Electron process
-      ipcRenderer.send(IPC.CREATE_SERVICE_REQUEST, { orgName: this.orgName, files: files });
+      ipcRenderer.send(IPC.CREATE_SERVICE_REQUEST, { orgName: name, files: files });
 
       // Clear the org name and file input
       this.orgName = "";
       this.$refs.fileList.files = null;
+    },
+    formatOrgName(orgName) {
+      return orgName.replace(" ", "_");
     }
   }
 };
 </script>
 
 <style scoped>
+.custom-file-input:hover {
+  cursor: pointer;
+}
 </style>
