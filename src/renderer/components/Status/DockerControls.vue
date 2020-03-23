@@ -26,6 +26,7 @@ export default {
         },
         remove() {
             ipcRenderer.send(IPC.REMOVE_SERVICE_REQUEST, this.name);
+            this.$router.push({name: 'home-page'});
         }
     }
 }
