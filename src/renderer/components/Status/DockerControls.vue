@@ -11,6 +11,9 @@
 </template>
 
 <script>
+const { ipcRenderer } = require('electron');
+const IPC = require('../../../main/contracts/Ipc');
+
 export default {
     name: 'docker-controls',
     props: ['name'],

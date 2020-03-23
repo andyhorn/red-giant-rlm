@@ -1,5 +1,5 @@
 <template>
-  <table class="table">
+  <table class="table" v-if="docker != null">
     <thead>
       <tr>
         <th colspan="3">Docker Container</th>
@@ -18,6 +18,9 @@
       </tr>
     </tbody>
   </table>
+  <div v-else>
+    <p>Docker container not running.</p>
+  </div>
 </template>
 
 <script>

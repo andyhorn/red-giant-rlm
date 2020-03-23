@@ -43,7 +43,6 @@ export default {
     setupListeners() {
       // Handle the docker count event
       ipcRenderer.on(IPC.DOCKER_COUNT_RESPONSE, (e, data) => {
-        console.log(`Received "${data}" number of containers`);
         this.dockerInstances = data;
       });
 

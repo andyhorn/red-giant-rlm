@@ -30,8 +30,6 @@
 </template>
 
 <script>
-const { shell } = require("electron");
-
 export default {
   name: "configuration",
   props: ["compose"],
