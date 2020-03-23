@@ -6,6 +6,7 @@ const ComposeManager = require('../helpers/ComposeManager').default;
 const composeManager = new ComposeManager(FilePaths.dockerComposeDest);
 const Response = require('../responses/response');
 const DockerManager = require('../helpers/DockerManager');
+const publicIp = require('public-ip');
 
 /* HANDLER FUNCTIONS */
 export async function handleRemoveServiceRequest(serviceName) {
@@ -125,6 +126,12 @@ export async function handleDockerCountRequest() {
 export async function handleDockerServicesRequest() {
     let services = await DockerManager.GetRunningContainers();
     sendDockerServicesResponse(services);
+}
+
+export async function handleClientLicenseRequest(port) {
+    let ip = await publicIp.v4();
+    let fileData = `HOST ${ip} ANY ${port}`;
+    FileManager.SaveFile('redgiant-client.primary.lic', fileData);
 }
 
 /* HELPER FUNCTIONS */

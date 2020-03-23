@@ -2,6 +2,7 @@ const fs = require('fs');
 const path = require('path');
 const FilePaths = require('../contracts/FilePaths');
 const replace = require('replace');
+const { dialog } = require('electron');
 
 const ISV_FROM = "ISV redgiant";
 
@@ -48,4 +49,18 @@ export function UpdateIsv(orgName, isvPort) {
     };
 
     return replace(options);
+}
+
+export function SaveFile(fileName, data) {
+    let defaultPath = path.join(require('os').homedir(), "Desktop", fileName);
+    let options = {
+        title: 'Save Client License',
+        defaultPath: defaultPath
+    };
+
+    let writePath = dialog.showSaveDialogSync(options);
+
+    if (writePath) {
+        fs.writeFileSync(writePath, data);
+    }
 }

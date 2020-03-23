@@ -21,3 +21,5 @@ module.exports.CREATE_SERVICE_RESPONSE = "createServiceResponse";
 
 module.exports.DOCKER_SERVICES_REQUEST = "dockerServicesRequest";
 module.exports.DOCKER_SERVICES_RESPONSE = "dockerServicesResponse";
+
+module.exports.CLIENT_LICENSE_REQUEST = "clientLicenseRequest";

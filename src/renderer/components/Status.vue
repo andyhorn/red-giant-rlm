@@ -1,8 +1,11 @@
 <template>
     <div class="container-fluid">
-        <div class="m-0 p-1 border-bottom">
-            <router-link :to="{ path: 'home-page' }">Back</router-link> |
-            <a href="#" @click="getStatus">Refresh</a>
+        <div class="m-0 p-1 border-bottom d-flex flex-row justify-content-between">
+            <div>
+                <router-link :to="{ path: 'home-page' }">Back</router-link> |
+                <a href="#" @click="getStatus">Refresh</a>
+            </div>
+            <a href="#" @click="generateLicense">Generate Client License</a>
         </div>
         <StatusTable 
             :compose="composeData" 
@@ -37,6 +40,10 @@ export default {
         getStatus() {
             ipcRenderer.send(IPC.SERVICE_STATUS_REQUEST, this.name);
         },
+        generateLicense() {
+            let port = this.composeData.ports[2].split(":")[1];
+            ipcRenderer.send(IPC.CLIENT_LICENSE_REQUEST, port);
+        }
     },
     mounted() {
         this.name = this.$route.query.name;

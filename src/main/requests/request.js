@@ -27,4 +27,7 @@ export default function init () {
 
     // Handle the "Docker Services" request
     ipcMain.on(IPC.DOCKER_SERVICES_REQUEST, () => Handlers.handleDockerServicesRequest());
+
+    // Handle the client license file request
+    ipcMain.on(IPC.CLIENT_LICENSE_REQUEST, (e, port) => Handlers.handleClientLicenseRequest(port));
 }
