@@ -20,7 +20,6 @@ export default {
     props: ['container'],
     methods: {
         stop(id) {
-            console.log("Requesting stop of container with id " + id);
             ipcRenderer.send(IPC.STOP_DOCKER_REQUEST, { isName: false, id: id });
         }
     }

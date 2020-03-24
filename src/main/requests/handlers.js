@@ -10,6 +10,7 @@ const publicIp = require('public-ip');
 
 /* HANDLER FUNCTIONS */
 export async function handleRemoveServiceRequest(serviceName) {
+    Response.sendShowModalEvent();
     // Stop the desired service
     let stopped = await stopService(serviceName);
 
@@ -21,6 +22,8 @@ export async function handleRemoveServiceRequest(serviceName) {
         FileManager.RemoveLicenseFiles(serviceName);
         Response.sendRemoveServiceResponse();
     }
+
+    Response.sendHideModalEvent();
 }
 
 export async function handleServiceStatusRequest(name) {
@@ -46,6 +49,7 @@ export async function handleServiceStatusRequest(name) {
 
 export async function handleStartDockerRequest(name) {
     console.log(`Starting service "${name}"`);
+    Response.sendShowModalEvent();
 
     // Start a service with the given name
     let started = await launchService(name);
@@ -55,9 +59,11 @@ export async function handleStartDockerRequest(name) {
     if (started) {
         Response.sendStartDockerResponse();
     }
+    Response.sendHideModalEvent();
 }
 
 export async function handleStopDockerRequest(data) {
+    Response.sendShowModalEvent();
     let stopped;
     // Stop the desired container
     if (data.isName) {
@@ -72,10 +78,13 @@ export async function handleStopDockerRequest(data) {
         sendDockerCount();
         Response.sendStopDockerResponse();
     }
+
+    Response.sendHideModalEvent();
 }
 
 export async function handleCreateServiceRequest(data) {
     console.log("Adding new service with name: " + data.orgName);
+    Response.sendShowModalEvent();
 
     // Add a new service to the compose file
     let service = composeManager.addService(data.orgName);
@@ -107,6 +116,7 @@ export async function handleCreateServiceRequest(data) {
             sendDockerCount();
         }
     }
+    Response.sendHideModalEvent();
 }
 
 // Retrieve the currently configured service names

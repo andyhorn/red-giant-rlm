@@ -46,3 +46,11 @@ export function sendDockerServicesResponse(services) {
     console.log(services);
     sendResponse(IPC.DOCKER_SERVICES_RESPONSE, services);
 }
+
+export function sendShowModalEvent() {
+    sendResponse(IPC.SHOW_MODAL_EVENT);
+}
+
+export function sendHideModalEvent() {
+    sendResponse(IPC.HIDE_MODAL_EVENT);
+}

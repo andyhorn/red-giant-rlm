@@ -10,7 +10,7 @@
       </script>
     <% } %>
   </head>
-  <body>
+  <body class="bg-light">
     <div id="app"></div>
     <!-- Set `__static` path to static files in production -->
     <% if (!htmlWebpackPlugin.options.isBrowser && !htmlWebpackPlugin.options.isDevelopment) { %>
@@ -21,4 +21,6 @@
 
     <!-- webpack builds are automatically injected -->
   </body>
+  <style>
+  </style>
 </html>

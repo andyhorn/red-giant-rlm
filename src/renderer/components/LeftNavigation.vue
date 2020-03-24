@@ -1,5 +1,5 @@
 <template>
-    <div id="wrapper">
+    <div id="wrapper" class="bg-light">
         <DockerCounter />
     </div>
 </template>
@@ -24,7 +24,6 @@ export default {
   top: 0;
   border-right: 1px solid silver;
   z-index: 100;
-  background-color: white;
   overflow-x: hidden;
 }
 </style>

@@ -23,3 +23,6 @@ module.exports.DOCKER_SERVICES_REQUEST = "dockerServicesRequest";
 module.exports.DOCKER_SERVICES_RESPONSE = "dockerServicesResponse";
 
 module.exports.CLIENT_LICENSE_REQUEST = "clientLicenseRequest";
+
+module.exports.SHOW_MODAL_EVENT = "showModalEvent";
+module.exports.HIDE_MODAL_EVENT = "hideModalEvent";
