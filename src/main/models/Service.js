@@ -19,6 +19,14 @@ export default class Service {
         this.restart = '';
     }
 
+    getIsvPort() {
+        if (this.ports.length == 3) {
+            return this.ports[2].split(":")[0];
+        }
+
+        return null;
+    }
+
     toString() {
         let rawData = {
             container_name: this.container_name,

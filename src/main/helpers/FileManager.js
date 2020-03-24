@@ -22,6 +22,11 @@ export function CopyLicenseFiles(orgName, fileList) {
     }
 }
 
+export function ClearLicensesFor(orgName) {
+    RemoveLicenseFiles(orgName);
+    CreateServiceFolder(orgName);
+}
+
 export function RemoveLicenseFiles(name) {
     let directory = path.join(FilePaths.licenseDirPath, name);
 

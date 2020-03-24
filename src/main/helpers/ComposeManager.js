@@ -120,6 +120,8 @@ export default class {
             let service = this.services.find(s => s.name == serviceName);
             return service;
         }
+
+        return null;
     }
 
     removeService(name) {

@@ -83,40 +83,70 @@ export async function handleStopDockerRequest(data) {
 }
 
 export async function handleCreateServiceRequest(data) {
-    console.log("Adding new service with name: " + data.orgName);
+    // Show the "Working" modal
     Response.sendShowModalEvent();
 
-    // Add a new service to the compose file
-    let service = composeManager.addService(data.orgName);
+    // Check if service already exists
+    let service = composeManager.getService(data.orgName);
+    console.log(`Service ${data.orgName} exists? ${service != null}`);
 
-    // If successfully added, save the compose file data
-    // and trigger the "update service names" event
-    if (service) {
-        console.log("Service added to Compose file");
+    // If service does not exist, create a new service
+    if (service == null) {
+        // Add the service
+        service = composeManager.addService(data.orgName);
+
+        // Save the file
         composeManager.saveFile();
+
+        // Trigger the service names event
         sendServiceNames();
-
-        // Copy the license files to the organization folder
-        console.log("Copying license files");
-        FileManager.CopyLicenseFiles(data.orgName, data.files);
-
-        let port = service.ports[2].split(":")[1];
-        console.log(`Setting ISV port to ${port}`);
-        let result = FileManager.UpdateIsv(data.orgName, port);
-        console.log(result);
-
-        // Launch the new service
-        console.log("Launching new service...");
-        let launched = await launchService(data.orgName);
-        if (launched) {
-            // If launched successfully, trigger the 
-            // "docker count" event
-            console.log("Successfully launched!");
-            Response.sendStartDockerResponse();
-            sendDockerCount();
-        }
     }
+
+    // Remove the existing license files
+    FileManager.ClearLicensesFor(data.orgName);
+
+    // Copy in the new license files
+    FileManager.CopyLicenseFiles(data.orgName, data.files);
+
+    // Update the license files with the ISV port
+    let isvPort = service.getIsvPort();
+    FileManager.UpdateIsv(data.orgName, isvPort);
+
+    // (Re)Build and launch the service
+    await launchService(data.orgName);
+
+    // Trigger the appropriate events
+    Response.sendStartDockerResponse();
     Response.sendHideModalEvent();
+
+    // // If successfully added, save the compose file data
+    // // and trigger the "update service names" event
+    // if (service) {
+    //     console.log("Service added to Compose file");
+    //     composeManager.saveFile();
+    //     sendServiceNames();
+
+    //     // Copy the license files to the organization folder
+    //     console.log("Copying license files");
+    //     FileManager.CopyLicenseFiles(data.orgName, data.files);
+
+    //     let port = service.ports[2].split(":")[1];
+    //     console.log(`Setting ISV port to ${port}`);
+    //     let result = FileManager.UpdateIsv(data.orgName, port);
+    //     console.log(result);
+
+    //     // Launch the new service
+    //     console.log("Launching new service...");
+    //     let launched = await launchService(data.orgName);
+    //     if (launched) {
+    //         // If launched successfully, trigger the 
+    //         // "docker count" event
+    //         console.log("Successfully launched!");
+    //         Response.sendStartDockerResponse();
+    //         sendDockerCount();
+    //     }
+    // }
+    // Response.sendHideModalEvent();
 }
 
 // Retrieve the currently configured service names
