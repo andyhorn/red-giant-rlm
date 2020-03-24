@@ -19,12 +19,14 @@
 <script>
 const { ipcRenderer } = require('electron');
 const IPC = require('../../main/contracts/Ipc');
+const MODAL_TIMEOUT = 1 * 60 * 1000;
 
 export default {
     name: 'busy-modal',
     methods: {
         showModal() {
             this.$refs.modal.show();
+            setTimeout(this.$refs.modal.hide, MODAL_TIMEOUT);
         },
         hideModal() {
             this.$refs.modal.hide();

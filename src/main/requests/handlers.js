@@ -8,7 +8,7 @@ const publicIp = require('public-ip');
 
 /* HANDLER FUNCTIONS */
 export async function handleRemoveServiceRequest(serviceName) {
-    Response.sendShowModalEvent();
+    showModal();
     // Stop the desired service
     let stopped = await stopService(serviceName);
 
@@ -21,7 +21,7 @@ export async function handleRemoveServiceRequest(serviceName) {
         Response.sendRemoveServiceResponse();
     }
 
-    Response.sendHideModalEvent();
+    hideModal();
 }
 
 export async function handleServiceStatusRequest(name) {
@@ -46,8 +46,8 @@ export async function handleServiceStatusRequest(name) {
 }
 
 export async function handleStartDockerRequest(name) {
-    console.log(`Starting service "${name}"`);
-    Response.sendShowModalEvent();
+    
+    showModal();
 
     // Start a service with the given name
     let started = await launchService(name);
@@ -57,11 +57,13 @@ export async function handleStartDockerRequest(name) {
     if (started) {
         Response.sendStartDockerResponse();
     }
-    Response.sendHideModalEvent();
+
+    hideModal();
 }
 
 export async function handleStopDockerRequest(data) {
-    Response.sendShowModalEvent();
+    showModal();
+
     let stopped;
     // Stop the desired container
     if (data.isName) {
@@ -77,12 +79,12 @@ export async function handleStopDockerRequest(data) {
         Response.sendStopDockerResponse();
     }
 
-    Response.sendHideModalEvent();
+    hideModal();
 }
 
 export async function handleCreateServiceRequest(data) {
     // Show the "Working" modal
-    Response.sendShowModalEvent();
+    showModal();
 
     // Check if service already exists
     let service = composeManager.getService(data.orgName);
@@ -114,7 +116,7 @@ export async function handleCreateServiceRequest(data) {
 
     // Trigger the appropriate events
     Response.sendStartDockerResponse();
-    Response.sendHideModalEvent();
+    hideModal();
 }
 
 // Retrieve the currently configured service names
@@ -191,4 +193,12 @@ function getServiceNames() {
     composeManager.refresh();
     let services = composeManager.serviceNames();
     return services;
+}
+
+function showModal() {
+    Response.sendShowModalEvent();
+}
+
+function hideModal() {
+    Response.sendHideModalEvent();
 }
