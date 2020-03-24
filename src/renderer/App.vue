@@ -24,6 +24,6 @@ export default {
 
 #body {
   padding: 5px;
-  padding-left: 20%;
+  padding-left: 200px;
 }
 </style>

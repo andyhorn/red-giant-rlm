@@ -1,9 +1,7 @@
 'use strict'
 
-import { app, BrowserWindow } from 'electron'
+import { app, BrowserWindow, screen } from 'electron'
 
-// const SetUpFiles = require('./helpers/SetUpFiles').default;
-// SetUpFiles();
 // Set up the necessary files and folders on the local system
 require('./helpers/SetUpFiles').default();
 
@@ -25,21 +23,30 @@ function createWindow() {
   /**
    * Initial window options
    */
+
+  let { width, height } = screen.getPrimaryDisplay().workAreaSize;
+
   mainWindow = new BrowserWindow({
-    height: 563,
-    useContentSize: true,
-    width: 1000,
+    width: width,
+    height: height,
     webPreferences: {
       nodeIntegration: true,
       nodeIntegrationInWorker: true
-    }
-  })
+    },
+    show: false
+  });
+
+  mainWindow.maximize()
 
   mainWindow.loadURL(winURL)
 
   // Initialize the request and response modules
   require('./responses/response').init({ mainWindow });
   require('./requests/request').default();
+
+  mainWindow.on('ready-to-show', () => {
+    mainWindow.show()
+  })
 
   mainWindow.on('closed', () => {
     mainWindow = null
