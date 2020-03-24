@@ -1,5 +1,3 @@
-import { sendDockerServicesResponse } from '../responses/response';
-
 const FilePaths = require('../contracts/FilePaths');
 const FileManager = require('../helpers/FileManager');
 const ComposeManager = require('../helpers/ComposeManager').default;
@@ -88,7 +86,6 @@ export async function handleCreateServiceRequest(data) {
 
     // Check if service already exists
     let service = composeManager.getService(data.orgName);
-    console.log(`Service ${data.orgName} exists? ${service != null}`);
 
     // If service does not exist, create a new service
     if (service == null) {
@@ -118,43 +115,12 @@ export async function handleCreateServiceRequest(data) {
     // Trigger the appropriate events
     Response.sendStartDockerResponse();
     Response.sendHideModalEvent();
-
-    // // If successfully added, save the compose file data
-    // // and trigger the "update service names" event
-    // if (service) {
-    //     console.log("Service added to Compose file");
-    //     composeManager.saveFile();
-    //     sendServiceNames();
-
-    //     // Copy the license files to the organization folder
-    //     console.log("Copying license files");
-    //     FileManager.CopyLicenseFiles(data.orgName, data.files);
-
-    //     let port = service.ports[2].split(":")[1];
-    //     console.log(`Setting ISV port to ${port}`);
-    //     let result = FileManager.UpdateIsv(data.orgName, port);
-    //     console.log(result);
-
-    //     // Launch the new service
-    //     console.log("Launching new service...");
-    //     let launched = await launchService(data.orgName);
-    //     if (launched) {
-    //         // If launched successfully, trigger the 
-    //         // "docker count" event
-    //         console.log("Successfully launched!");
-    //         Response.sendStartDockerResponse();
-    //         sendDockerCount();
-    //     }
-    // }
-    // Response.sendHideModalEvent();
 }
 
 // Retrieve the currently configured service names
 // and send them with the "service names" event
 export function handleServiceNamesRequest() {
     sendServiceNames();
-    // let services = getServiceNames();
-    // Response.sendServiceNamesResponse(services);
 }
 
 // Retrieve the count of running Docker containers
@@ -166,7 +132,7 @@ export async function handleDockerCountRequest() {
 // Retrieve a list of running Docker containers
 export async function handleDockerServicesRequest() {
     let services = await DockerManager.GetRunningContainers();
-    sendDockerServicesResponse(services);
+    Response.sendDockerServicesResponse(services);
 }
 
 export async function handleClientLicenseRequest(port) {
