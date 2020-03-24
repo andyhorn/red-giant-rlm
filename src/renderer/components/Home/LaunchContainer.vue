@@ -66,7 +66,7 @@ export default {
 </script>
 
 <style scoped>
-.custom-file-input:hover {
+#licenseInput:hover {
   cursor: pointer;
 }
 </style>
