@@ -42,7 +42,6 @@ export default {
   methods: {
     launch() {
       // Get the full path for each file selected
-      // let files = [...this.$refs.fileList.files].map(x => x.path);
       let files = this.files.map(x => x.path);
 
       let name = this.formatOrgName(this.orgName);
@@ -56,7 +55,6 @@ export default {
       // Clear the org name and file input
       this.orgName = "";
       this.files = [];
-      // this.$refs.fileList.files = null;
     },
     formatOrgName(orgName) {
       return orgName.replace(" ", "_");
@@ -67,6 +65,6 @@ export default {
 
 <style scoped>
 #licenseInput:hover {
-  cursor: pointer;
+  cursor: pointer !important;
 }
 </style>
