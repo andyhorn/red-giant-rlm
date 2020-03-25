@@ -19,7 +19,7 @@
 <script>
 const { ipcRenderer } = require('electron');
 const IPC = require('../../main/contracts/Ipc');
-const MODAL_TIMEOUT = 1 * 60 * 1000;
+const MODAL_TIMEOUT = 3 * 60 * 1000;
 
 export default {
     name: 'busy-modal',
