@@ -9,7 +9,6 @@ export function init(data) {
 export function sendResponse(response, data = null) {
     console.log(`Sending response type: ${response}`);
     if (data !== null) {
-        console.log(`Sending response with data: ${data}`);
         webContents.send(response, data);
     } else {
         webContents.send(response)
@@ -37,13 +36,10 @@ export function sendServiceNamesResponse(names) {
 }
 
 export function sendDockerCountResponse(count) {
-    console.log(`Sending Docker Count Response with number: ${count}`);
     sendResponse(IPC.DOCKER_COUNT_RESPONSE, count);
 }
 
 export function sendDockerServicesResponse(services) {
-    console.log("Sending Docker services response with services:");
-    console.log(services);
     sendResponse(IPC.DOCKER_SERVICES_RESPONSE, services);
 }
 

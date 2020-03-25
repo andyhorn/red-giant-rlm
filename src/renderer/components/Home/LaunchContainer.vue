@@ -3,27 +3,30 @@
     <h3>Launch new server</h3>
     <b-form>
       <b-form-group id="orgNameGroup" label="Customer name" label-for="orgName">
-        <b-form-input id="orgName" v-model="orgName" placeholder="Customer name" class="mb-2"></b-form-input>
+        <b-form-input
+          id="orgName"
+          required
+          v-model="orgName"
+          placeholder="Customer name"
+          class="mb-2"
+        ></b-form-input>
       </b-form-group>
       <b-form-group id="fileGroup" label="License files" label-for="licenseInput">
         <b-form-file
           id="licenseInput"
           v-model="files"
-          :state="Boolean(files.length)"
           placeholder="Select files or drag and drop here"
           drop-placeholder="Drop files here"
           multiple
           accept=".lic"
+          v-b-hover="hover"
+          :class="{ 'hover': hovering }"
+          required
+          :file-name-formatter="fileNameFormatter"
         ></b-form-file>
       </b-form-group>
       <b-button variant="success" class="mt-2" @click="launch">Start!</b-button>
     </b-form>
-    <div v-if="files.length" class="mt-4">
-      <h5 class="m-0">Files:</h5>
-      <ul class="list-unstyled">
-        <li v-for="file in files" :key="file.name">{{ file.name }}</li>
-      </ul>
-    </div>
   </div>
 </template>
 
@@ -36,7 +39,8 @@ export default {
   data() {
     return {
       orgName: "",
-      files: []
+      files: [],
+      hovering: false
     };
   },
   methods: {
@@ -58,13 +62,23 @@ export default {
     },
     formatOrgName(orgName) {
       return orgName.replace(" ", "_");
+    },
+    hover(isHovering) {
+      this.hovering = isHovering;
+    },
+    fileNameFormatter(files) {
+      if (files.length == 1) {
+        return files[0].name;
+      } else {
+        return `${files[0].name} + ${files.length - 1} more`;
+      }
     }
   }
 };
 </script>
 
 <style scoped>
-#licenseInput:hover {
-  cursor: pointer !important;
+.hover {
+  box-shadow: 0px 0px 5px 1px green !important;
 }
 </style>

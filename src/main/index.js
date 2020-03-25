@@ -67,6 +67,8 @@ app.on('activate', () => {
   }
 })
 
+app.allowRendererProcessReuse = false;
+
 /**
  * Auto Updater
  *

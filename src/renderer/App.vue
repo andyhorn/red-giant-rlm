@@ -10,6 +10,7 @@
 
 <script>
 import "bootstrap/dist/css/bootstrap.css";
+import 'bootstrap-vue/dist/bootstrap-vue.css';
 const LeftNavigation = require('@/components/LeftNavigation').default;
 const BusyModal = require('@/components/BusyModal').default;
 const { ipcRenderer } = require('electron');

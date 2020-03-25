@@ -79,7 +79,6 @@ export default {
 
     // Scan for docker instances
     this.scan();
-    setInterval(this.scan, 10 * 1000);
   }
 };
 </script>
