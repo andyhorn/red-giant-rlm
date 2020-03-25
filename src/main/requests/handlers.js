@@ -162,6 +162,7 @@ export async function handleRlmLogRequest(serviceName) {
     }
     catch (e) {
         console.log("Log file not retrieved");
+        Response.sendRlmLogError("Error retrieving log file - Run diagnostics in the web portal, then try again.");
     }
 }
 

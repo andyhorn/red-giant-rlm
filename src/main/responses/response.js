@@ -50,3 +50,7 @@ export function sendShowModalEvent() {
 export function sendHideModalEvent() {
     sendResponse(IPC.HIDE_MODAL_EVENT);
 }
+
+export function sendRlmLogError(content) {
+    sendResponse(IPC.RLM_LOGS_RESPONSE, content);
+}

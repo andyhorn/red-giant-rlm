@@ -68,6 +68,9 @@ export default {
       ipcRenderer.on(IPC.STOP_DOCKER_RESPONSE, () => {
         vm.getStatus();
       });
+      ipcRenderer.on(IPC.RLM_LOGS_RESPONSE, (e, data) => {
+        alert(data);
+      });
 	  },
     getName() {
       if (this.name == "") {

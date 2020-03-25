@@ -124,7 +124,6 @@ export function GetLogDataFor(id, path) {
         exec(command, (err) => {
             if (err) {
                 console.log("Error copying log file");
-                console.log(err);
                 return reject();
             }
 
