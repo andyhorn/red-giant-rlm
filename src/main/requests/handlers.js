@@ -20,7 +20,7 @@ export async function handleRemoveServiceRequest(serviceName) {
     if (stopped) {
         console.log("Service stopped - removing from Compose file");
         removeServiceFromCompose(serviceName);
-        FileManager.RemoveLicenseFiles(serviceName);
+        FileManager.RemoveLicenseDirectoryFor(serviceName);
         Response.sendRemoveServiceResponse();
     }
 
@@ -141,26 +141,36 @@ export async function handleCreateServiceRequest(data) {
 
 export async function handleRlmLogRequest(serviceName) {
     console.log(`Retrieving log file for container rlm_${serviceName}`);
+
+    // Get the desired container by name
     let container = await DockerManager.FindByName(`rlm_${serviceName}`);
 
+    // Check if the container is null (does not exist or is not running)
     if (container == null) {
         console.log("Container not found")
     }
+
+    // If a container was found, get its ID
     let id = container.Id;
     console.log(`Container ID: ${id}`);
 
+    // Prompt the user for a save location for the file
     let savePath = FileManager.GetSaveLocation("rlmdiag.txt");
 
+    // If the user canceled, return early
     if (savePath == null) {
         console.log("User canceled retrieval");
         return;
     }
 
+    // Copy the log file data to the local machine at 'savePath'
     try {
         await DockerManager.GetLogDataFor(id, savePath);
         console.log("Log file retreived");
     }
     catch (e) {
+        // If there was an error, display an error popup to the user
+        // This error is likely due to the log file not existing in the specified container
         console.log("Log file not retrieved");
         Response.sendRlmLogError("Error retrieving log file - Run diagnostics in the web portal, then try again.");
     }
