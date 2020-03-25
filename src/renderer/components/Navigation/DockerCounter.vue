@@ -1,14 +1,17 @@
 <template>
   <div id="container" class="d-flex flex-column justify-content-between">
     <div>
-      <div class="border-bottom">
-        <p class="m-0 p-1"><strong>Running:</strong> 
-          <router-link :to="{name: 'docker-instances'}">{{ dockerInstances }}</router-link></p>
+      <div class="border-bottom d-flex flex-column align-items-center pb-1">
+        <p class="m-0 p-2"><strong>Running</strong></p>
+        <router-link v-if="dockerInstances" :to="{name: 'docker-instances'}">{{ dockerInstances }}</router-link>
+        <p class="m-0 p-0" v-if="!dockerInstances">None</p>
       </div>
 
       <div class="mt-2">
-        <p class="m-0 p-1"><strong>Configured</strong></p>
-        <ul class="list-unstyled pl-1">
+        <p class="m-0 p-1 text-center">
+          <strong>Configured</strong>
+        </p>
+        <ul class="list-unstyled text-center">
           <li v-for="service in composeServices" :key="service">
             <a href="#" @click="open(service)">{{ service }}</a>
           </li>
@@ -21,8 +24,8 @@
 </template>
 
 <script>
-const { ipcRenderer } = require('electron');
-const IPC = require('../../../main/contracts/Ipc');
+const { ipcRenderer } = require("electron");
+const IPC = require("../../../main/contracts/Ipc");
 
 export default {
   name: "docker-counter",
@@ -34,7 +37,7 @@ export default {
   },
   methods: {
     open(name) {
-      this.$router.push({name: 'service-status', query: {name: name}});
+      this.$router.push({ name: "service-status", query: { name: name } });
     },
     scan() {
       ipcRenderer.send(IPC.DOCKER_COUNT_REQUEST);
