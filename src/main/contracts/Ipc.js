@@ -26,3 +26,6 @@ module.exports.CLIENT_LICENSE_REQUEST = "clientLicenseRequest";
 
 module.exports.SHOW_MODAL_EVENT = "showModalEvent";
 module.exports.HIDE_MODAL_EVENT = "hideModalEvent";
+
+module.exports.RLM_LOGS_REQUEST = "rlmLogsRequest";
+module.exports.RLM_LOGS_RESPONSE = "rlmLogsResponse";

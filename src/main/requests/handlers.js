@@ -139,6 +139,32 @@ export async function handleCreateServiceRequest(data) {
     hideModal();
 }
 
+export async function handleRlmLogRequest(serviceName) {
+    console.log(`Retrieving log file for container rlm_${serviceName}`);
+    let container = await DockerManager.FindByName(`rlm_${serviceName}`);
+
+    if (container == null) {
+        console.log("Container not found")
+    }
+    let id = container.Id;
+    console.log(`Container ID: ${id}`);
+
+    let savePath = FileManager.GetSaveLocation("rlmdiag.txt");
+
+    if (savePath == null) {
+        console.log("User canceled retrieval");
+        return;
+    }
+
+    try {
+        await DockerManager.GetLogDataFor(id, savePath);
+        console.log("Log file retreived");
+    }
+    catch (e) {
+        console.log("Log file not retrieved");
+    }
+}
+
 // Retrieve the currently configured service names
 // and send them with the "service names" event
 export function handleServiceNamesRequest() {

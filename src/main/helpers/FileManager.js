@@ -27,6 +27,18 @@ export function ClearLicensesFor(orgName) {
     CreateServiceFolder(orgName);
 }
 
+export function GetSaveLocation(defaultFileName) {
+    let defaultPath = path.join(require('os').homedir(), "Desktop", defaultFileName);
+    let options = {
+        title: 'Save File',
+        defaultPath: defaultPath
+    };
+
+    let writePath = dialog.showSaveDialogSync(options);
+
+    return writePath;
+}
+
 export function RemoveLicenseFiles(name) {
     let directory = path.join(FilePaths.licenseDirPath, name);
 

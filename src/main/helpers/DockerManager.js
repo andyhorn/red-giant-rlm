@@ -116,6 +116,24 @@ export function StopContainer(id) {
     });
 }
 
+export function GetLogDataFor(id, path) {
+    console.log(`Executing copy command to retrieve log file from container ${id}`);
+    let command = `docker cp ${id}:/usr/bin/rlm/rlmdiag.txt ${path}`;
+
+    return new Promise((resolve, reject) => {
+        exec(command, (err) => {
+            if (err) {
+                console.log("Error copying log file");
+                console.log(err);
+                return reject();
+            }
+
+            console.log("Log file copied!");
+            return resolve();
+        });
+    });
+}
+
 function getById(id) {
     let docker = new Docker();
 

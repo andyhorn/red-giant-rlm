@@ -5,7 +5,10 @@
         <router-link :to="{ path: 'home-page' }">Back</router-link> |
         <a href="#" @click="getStatus">Refresh</a>
       </div>
-      <a href="#" @click="generateLicense">Generate Client License</a>
+      <div>
+        <a href="#" @click="generateLicense">Generate Client License</a> | 
+        <a href="#" @click="getLogs">Get Diagnostic Log</a>
+      </div>
     </div>
     <StatusTable :compose="composeData" :docker="dockerData" v-if="showConfig && showDocker" />
     <DockerControls :name="name" />
@@ -65,12 +68,15 @@ export default {
       ipcRenderer.on(IPC.STOP_DOCKER_RESPONSE, () => {
         vm.getStatus();
       });
-	},
-	getName() {
-		if (this.name == "") {
-			this.name = this.$route.query.name;
-		}
-	}
+	  },
+    getName() {
+      if (this.name == "") {
+        this.name = this.$route.query.name;
+      }
+    },
+    getLogs() {
+      ipcRenderer.send(IPC.RLM_LOGS_REQUEST, this.name);
+    }
   },
   beforeRouteUpdate(to, from, next) {
 	  const name = to.query.name;

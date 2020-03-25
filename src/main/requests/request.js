@@ -30,4 +30,6 @@ export default function init () {
 
     // Handle the client license file request
     ipcMain.on(IPC.CLIENT_LICENSE_REQUEST, (e, port) => Handlers.handleClientLicenseRequest(port));
+
+    ipcMain.on(IPC.RLM_LOGS_REQUEST, (e, name) => Handlers.handleRlmLogRequest(name));
 }

@@ -43,6 +43,6 @@ export default {
 
 <style scoped>
 table {
-    table-layout: fixed;
+  table-layout: fixed;
 }
 </style>
