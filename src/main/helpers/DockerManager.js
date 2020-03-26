@@ -7,6 +7,8 @@ const BASE = `docker-compose -f "${FilePaths.dockerComposeDest}"`;
 const BUILD = BASE + " up -d --build";
 const STOP = BASE + " stop";
 
+const REMOVE_BASE = "docker container rm -f";
+
 export function StartService(orgName) {
     // Build the Docker Compose command for this service
     let cmd = `${BUILD} ${orgName}`;
@@ -42,7 +44,7 @@ export async function CountRunningContainers() {
 }
 
 export async function FindByName(name) {
-    console.log(`Finding container with Image ${name}`);
+    console.log(`Finding container with name "${name}"`);
 
     // Attempt to get a running container by name
     let container = getByName(name);
@@ -55,9 +57,19 @@ export async function FindByName(name) {
     return container;
 }
 
-export function StopService(name) {
-    let cmd = `${STOP} ${name}`;
+export async function StopService(name) {
+    // let cmd = `${STOP} ${name}`;
     console.log(`Stopping service "${name}"`);
+
+    let id;
+    let cmd;
+    try {
+        id = await getByName(name);
+        cmd = `${REMOVE_BASE} ${id}`;
+    }
+    catch {
+        return false;
+    }
 
     return new Promise((resolve, reject) => {
         // Execute a subprocess calling Docker Compose

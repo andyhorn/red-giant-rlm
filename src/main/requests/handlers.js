@@ -74,7 +74,7 @@ export async function handleStopDockerRequest(data) {
         console.log(`Stopping service ${data.name}`);
         stopped = await stopService(data.name);
     } else {
-        console.log(`Stopping container ${id}`);
+        console.log(`Stopping container ${data.id}`);
         stopped = await stopContainer(data.id)
     }
 
