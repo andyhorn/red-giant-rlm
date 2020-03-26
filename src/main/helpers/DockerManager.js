@@ -189,7 +189,10 @@ async function getByName(name) {
     let containerList = await getAll();
 
     // Find the container with the given name
-    let container = containerList.find(x => x.Image == name);
+    console.log(`Finding container with name ${name}`);
+    // let container = containerList.find(x => Object.values(x.Labels).includes(name));
+    let container = containerList.find(c => c.Labels['com.docker.compose.service'] == name);
+    console.log(container);
 
     // If no container exists, return null
     if (container == undefined) {

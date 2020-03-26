@@ -36,7 +36,7 @@ export async function handleServiceStatusRequest(name) {
     };
 
     // Get the container data (if running)
-    let container = await DockerManager.FindByName(`rlm_${name}`);
+    let container = await DockerManager.FindByName(`${name}`);
 
     // If a running container was found, store the data in the
     // return object
@@ -143,7 +143,7 @@ export async function handleRlmLogRequest(serviceName) {
     console.log(`Retrieving log file for container rlm_${serviceName}`);
 
     // Get the desired container by name
-    let container = await DockerManager.FindByName(`rlm_${serviceName}`);
+    let container = await DockerManager.FindByName(`${serviceName}`);
 
     // Check if the container is null (does not exist or is not running)
     if (container == null) {

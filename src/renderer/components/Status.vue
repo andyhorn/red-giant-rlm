@@ -73,9 +73,7 @@ export default {
       });
 	  },
     getName() {
-      if (this.name == "") {
-        this.name = this.$route.query.name;
-      }
+      this.name = this.$route.query.name;
     },
     getLogs() {
       ipcRenderer.send(IPC.RLM_LOGS_REQUEST, this.name);
