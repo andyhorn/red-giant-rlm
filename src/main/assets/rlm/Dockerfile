@@ -23,7 +23,7 @@ RUN wget http://www.reprisesoftware.com/license_admin_kits/x64_l1.admin.tar.gz
 RUN tar -xf /usr/bin/rlm/x64_l1.admin.tar.gz
 
 # Set full permissions on all files
-RUN chmod 777 /usr/bin/rlm
+RUN chmod 777 /usr/bin/rlm/* && chmod +x ./rlm && chmod +x ./entrypoint.sh
 
 # Set the entrypoint
 ENTRYPOINT [ "/bin/bash", "/usr/bin/rlm/entrypoint.sh" ]
