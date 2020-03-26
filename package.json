@@ -1,6 +1,6 @@
 {
   "name": "red-giant-rlm-manager",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "author": "andyhorn <andyjhorn@gmail.com>",
   "description": "A management utility for Dockerized instances of RLM",
   "license": "MIT",

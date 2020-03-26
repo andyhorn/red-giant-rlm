@@ -58,10 +58,10 @@ export async function StopService (name) {
   // let cmd = `${STOP} ${name}`;
   console.log(`Stopping service "${name}"`)
 
-  let id
   let cmd
   try {
-    id = await getByName(name)
+    let container = await getByName(name)
+    let id = container.Id
     cmd = `${REMOVE_BASE} ${id}`
   } catch (e) {
     return false
