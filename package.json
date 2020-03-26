@@ -1,6 +1,6 @@
 {
   "name": "red-giant-rlm-manager",
-  "version": "1.1.1",
+  "version": "1.2.0",
   "author": "Andy Horn <andyjhorn@gmail.com>",
   "description": "A management utility for Dockerized instances of RLM",
   "license": "MIT",
@@ -25,7 +25,8 @@
       "output": "build"
     },
     "extraResources": {
-      "from": "src/main/assets"
+      "from": "resources",
+      "to": ""
     },
     "files": [
       "dist/electron/**/*"
@@ -54,6 +55,7 @@
     "bootstrap-vue": "^2.7.0",
     "dockerode": "^3.1.0",
     "download-file": "^0.1.5",
+    "electron-root-path": "^1.0.16",
     "jquery": "^3.4.1",
     "popper.js": "^1.16.1",
     "public-ip": "^4.0.0",

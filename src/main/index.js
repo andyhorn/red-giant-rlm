@@ -33,10 +33,13 @@ function createWindow () {
       nodeIntegration: true,
       nodeIntegrationInWorker: true
     },
-    show: false
+    show: false,
+    title: 'Red Giant RLM Manager'
   })
 
   mainWindow.maximize()
+
+  mainWindow.removeMenu()
 
   mainWindow.loadURL(winURL)
 

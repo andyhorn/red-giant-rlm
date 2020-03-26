@@ -1,5 +1,6 @@
 const path = require('path')
 const appDataPath = require('appdata-path')
+const rootPath = require('electron-root-path').rootPath;
 
 const DOCKER_COMPOSE_FILENAME = 'docker-compose.yml'
 const DOCKERFILE_FILENAME = 'Dockerfile'
@@ -7,12 +8,12 @@ const ENTRYPOINT_FILENAME = 'entrypoint.sh'
 const RLM_EXECUTABLE_FILENAME = 'rlm'
 const REDGIANT_SET_FILENAME = 'redgiant.set'
 
-// var rlmDirPath = path.join("C:", "RLM");
 const rlmDirPath = path.join(appDataPath('Red Giant RLM Manager'))
 const rlmAssetsDirPath = path.join(rlmDirPath, 'rlmAssets')
 const licenseDirPath = path.join(rlmDirPath, 'licenses')
 
-const assetPath = path.resolve(__dirname, '..', 'assets', 'rlm')
+
+const assetPath = path.join(rootPath, 'resources')
 
 const dockerComposeAsset = path.join(assetPath, DOCKER_COMPOSE_FILENAME)
 const dockerfileAsset = path.join(assetPath, DOCKERFILE_FILENAME)
