@@ -11,24 +11,24 @@
 </template>
 
 <script>
-const { ipcRenderer } = require('electron');
-const IPC = require('../../../main/contracts/Ipc');
+const { ipcRenderer } = require('electron')
+const IPC = require('../../../main/contracts/Ipc')
 
 export default {
-    name: 'docker-controls',
-    props: ['name'],
-    methods: {
-        restart() {
-            ipcRenderer.send(IPC.START_DOCKER_REQUEST, this.name);
-        },
-        stop() {
-            ipcRenderer.send(IPC.STOP_DOCKER_REQUEST, { isName: true, name: this.name });
-        },
-        remove() {
-            ipcRenderer.send(IPC.REMOVE_SERVICE_REQUEST, this.name);
-            this.$router.push({name: 'home-page'});
-        }
+  name: 'docker-controls',
+  props: ['name'],
+  methods: {
+    restart () {
+      ipcRenderer.send(IPC.START_DOCKER_REQUEST, this.name)
+    },
+    stop () {
+      ipcRenderer.send(IPC.STOP_DOCKER_REQUEST, { isName: true, name: this.name })
+    },
+    remove () {
+      ipcRenderer.send(IPC.REMOVE_SERVICE_REQUEST, this.name)
+      this.$router.push({name: 'home-page'})
     }
+  }
 }
 </script>
 

@@ -9,41 +9,41 @@
 </template>
 
 <script>
-import "bootstrap/dist/css/bootstrap.css";
-import 'bootstrap-vue/dist/bootstrap-vue.css';
-const LeftNavigation = require('@/components/LeftNavigation').default;
-const BusyModal = require('@/components/BusyModal').default;
-const { ipcRenderer } = require('electron');
-const IPC = require('../main/contracts/Ipc');
+import 'bootstrap/dist/css/bootstrap.css'
+import 'bootstrap-vue/dist/bootstrap-vue.css'
+const LeftNavigation = require('@/components/LeftNavigation').default
+const BusyModal = require('@/components/BusyModal').default
+const { ipcRenderer } = require('electron')
+const IPC = require('../main/contracts/Ipc')
 
 export default {
-  name: "red-giant-rlm",
+  name: 'red-giant-rlm',
   components: {
     LeftNavigation,
     BusyModal
   },
-  data() {
+  data () {
     return {
       showBusyModal: false
     }
   },
-  mounted() {
+  mounted () {
     ipcRenderer.on(IPC.SHOW_MODAL_EVENT, () => {
-      this.showModal();
+      this.showModal()
     })
     ipcRenderer.on(IPC.HIDE_MODAL_EVENT, () => {
-      this.hideModal();
-    });
+      this.hideModal()
+    })
   },
   methods: {
-    showModal() {
-      this.showBusyModal = true;
+    showModal () {
+      this.showBusyModal = true
     },
-    hideModal() {
-      this.showBusyModal = false;
+    hideModal () {
+      this.showBusyModal = false
     }
   }
-};
+}
 </script>
 
 <style>

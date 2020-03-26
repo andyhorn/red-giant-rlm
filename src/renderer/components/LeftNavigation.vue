@@ -5,13 +5,13 @@
 </template>
 
 <script>
-const DockerCounter = require("@/components/Navigation/DockerCounter").default;
+const DockerCounter = require('@/components/Navigation/DockerCounter').default
 
 export default {
-    name: 'left-navigation',
-    components: {
-        DockerCounter
-    }
+  name: 'left-navigation',
+  components: {
+    DockerCounter
+  }
 }
 </script>
 

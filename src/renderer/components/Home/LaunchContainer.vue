@@ -31,50 +31,50 @@
 </template>
 
 <script>
-const { ipcRenderer } = require("electron");
-const IPC = require("../../../main/contracts/Ipc");
+const { ipcRenderer } = require('electron')
+const IPC = require('../../../main/contracts/Ipc')
 
 export default {
-  name: "launch-container",
-  data() {
+  name: 'launch-container',
+  data () {
     return {
-      orgName: "",
+      orgName: '',
       files: [],
       hovering: false
-    };
+    }
   },
   methods: {
-    launch() {
+    launch () {
       // Get the full path for each file selected
-      let files = this.files.map(x => x.path);
+      let files = this.files.map(x => x.path)
 
-      let name = this.formatOrgName(this.orgName);
+      let name = this.formatOrgName(this.orgName)
 
       // Send the file paths and org name to the main Electron process
       ipcRenderer.send(IPC.CREATE_SERVICE_REQUEST, {
         orgName: name,
         files: files
-      });
+      })
 
       // Clear the org name and file input
-      this.orgName = "";
-      this.files = [];
+      this.orgName = ''
+      this.files = []
     },
-    formatOrgName(orgName) {
-      return orgName.replace(" ", "_");
+    formatOrgName (orgName) {
+      return orgName.replace(' ', '_')
     },
-    hover(isHovering) {
-      this.hovering = isHovering;
+    hover (isHovering) {
+      this.hovering = isHovering
     },
-    fileNameFormatter(files) {
-      if (files.length == 1) {
-        return files[0].name;
+    fileNameFormatter (files) {
+      if (files.length === 1) {
+        return files[0].name
       } else {
-        return `${files[0].name} + ${files.length - 1} more`;
+        return `${files[0].name} + ${files.length - 1} more`
       }
     }
   }
-};
+}
 </script>
 
 <style scoped>

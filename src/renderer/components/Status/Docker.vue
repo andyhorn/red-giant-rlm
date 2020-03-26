@@ -25,14 +25,14 @@
 
 <script>
 export default {
-  name: "docker-status",
-  props: ["docker"],
+  name: 'docker-status',
+  props: ['docker'],
   computed: {
-    serviceName: function() {
-      return this.docker.Labels['com.docker.compose.service'];
+    serviceName: function () {
+      return this.docker.Labels['com.docker.compose.service']
     }
   }
-};
+}
 </script>
 
 <style scoped>

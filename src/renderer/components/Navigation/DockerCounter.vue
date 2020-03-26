@@ -24,66 +24,66 @@
 </template>
 
 <script>
-const { ipcRenderer } = require("electron");
-const IPC = require("../../../main/contracts/Ipc");
+const { ipcRenderer } = require('electron')
+const IPC = require('../../../main/contracts/Ipc')
 
 export default {
-  name: "docker-counter",
-  data() {
+  name: 'docker-counter',
+  data () {
     return {
       dockerInstances: 0,
       composeServices: 0
-    };
+    }
   },
   methods: {
-    open(name) {
-      this.$router.push({ name: "service-status", query: { name: name } });
+    open (name) {
+      this.$router.push({ name: 'service-status', query: { name: name } })
     },
-    scan() {
-      ipcRenderer.send(IPC.DOCKER_COUNT_REQUEST);
-      ipcRenderer.send(IPC.SERVICE_NAMES_REQUEST);
-      ipcRenderer.send(IPC.DOCKER_SERVICES_REQUEST);
+    scan () {
+      ipcRenderer.send(IPC.DOCKER_COUNT_REQUEST)
+      ipcRenderer.send(IPC.SERVICE_NAMES_REQUEST)
+      ipcRenderer.send(IPC.DOCKER_SERVICES_REQUEST)
     },
-    setupListeners() {
+    setupListeners () {
       // Handle the docker count event
       ipcRenderer.on(IPC.DOCKER_COUNT_RESPONSE, (e, data) => {
-        this.dockerInstances = data;
-      });
+        this.dockerInstances = data
+      })
 
       // Handle the compose service names event
       ipcRenderer.on(IPC.SERVICE_NAMES_RESPONSE, (e, data) => {
-        this.composeServices = data;
-      });
+        this.composeServices = data
+      })
 
       // Handle the docker stop event
       ipcRenderer.on(IPC.STOP_DOCKER_RESPONSE, () => {
-        this.scan();
-      });
+        this.scan()
+      })
 
       // Handle the docker start event
       ipcRenderer.on(IPC.START_DOCKER_RESPONSE, () => {
-        this.scan();
-      });
+        this.scan()
+      })
 
       // Handle the remove service event
       ipcRenderer.on(IPC.REMOVE_SERVICE_RESPONSE, () => {
-        this.scan();
-      });
+        this.scan()
+      })
 
       // Handle the create service event
       ipcRenderer.on(IPC.CREATE_SERVICE_RESPONSE, () => {
-        this.scan();
-      });
+        this.scan()
+      })
     }
   },
-  mounted() {
+  mounted () {
     // Initialize the event handlers
-    this.setupListeners();
+    this.setupListeners()
 
     // Scan for docker instances
-    this.scan();
+    this.scan()
   }
-};
+}
 </script>
 
 <style scoped>

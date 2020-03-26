@@ -24,36 +24,36 @@
 </template>
 
 <script>
-const IPC = require('../../main/contracts/Ipc');
-const { ipcRenderer } = require('electron');
-const Instance = require('@/components/DockerInstances/Instance').default;
+const IPC = require('../../main/contracts/Ipc')
+const { ipcRenderer } = require('electron')
+const Instance = require('@/components/DockerInstances/Instance').default
 
 export default {
-    name: 'docker-instances',
-    components: {
-        Instance
-    },
-    data() {
-        return {
-            containers: []
-        }
-    },
-    mounted() {
-        this.getContainers();
-
-        let vm = this;
-        ipcRenderer.on(IPC.DOCKER_SERVICES_RESPONSE, (e, containers) => {
-            vm.containers = containers;
-        });
-        ipcRenderer.on(IPC.STOP_DOCKER_RESPONSE, () => {
-            vm.getContainers();
-        });
-    },
-    methods: {
-        getContainers() {
-            ipcRenderer.send(IPC.DOCKER_SERVICES_REQUEST);
-        }
+  name: 'docker-instances',
+  components: {
+    Instance
+  },
+  data () {
+    return {
+      containers: []
     }
+  },
+  mounted () {
+    this.getContainers()
+
+    let vm = this
+    ipcRenderer.on(IPC.DOCKER_SERVICES_RESPONSE, (e, containers) => {
+      vm.containers = containers
+    })
+    ipcRenderer.on(IPC.STOP_DOCKER_RESPONSE, () => {
+      vm.getContainers()
+    })
+  },
+  methods: {
+    getContainers () {
+      ipcRenderer.send(IPC.DOCKER_SERVICES_REQUEST)
+    }
+  }
 }
 </script>
 

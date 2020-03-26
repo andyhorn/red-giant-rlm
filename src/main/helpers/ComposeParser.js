@@ -1,19 +1,19 @@
 export default function (composeFile) {
-    const Service = require('../models/Service').default;
-    const yaml = require('yaml');
-    const data = yaml.parse(composeFile);
-    var services = [];
+  const Service = require('../models/Service').default
+  const yaml = require('yaml')
+  const data = yaml.parse(composeFile)
+  var services = []
 
-    if (!data.services) {
-        return services;
-    }
-    
-    for (let i of Object.keys(data.services)) {
-        let data = composeFile.services[i];
-        let service = new Service(data);
+  if (!data.services) {
+    return services
+  }
 
-        services.push(service);
-    }
+  for (let i of Object.keys(data.services)) {
+    let data = composeFile.services[i]
+    let service = new Service(data)
 
-    return services;
+    services.push(service)
+  }
+
+  return services
 }

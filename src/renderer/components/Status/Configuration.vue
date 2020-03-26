@@ -31,14 +31,14 @@
 
 <script>
 export default {
-  name: "configuration",
-  props: ["compose"],
+  name: 'configuration',
+  props: ['compose'],
   methods: {
-    openWebPort() {
-      this.$emit("openWebPort");
+    openWebPort () {
+      this.$emit('openWebPort')
     }
   }
-};
+}
 </script>
 
 <style scoped>

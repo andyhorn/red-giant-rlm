@@ -6,23 +6,23 @@
 </template>
 
 <script>
-const { shell } = require('electron');
-const Configuration = require('./Configuration').default;
-const Docker = require('./Docker').default;
+const { shell } = require('electron')
+const Configuration = require('./Configuration').default
+const Docker = require('./Docker').default
 
 export default {
-    name: 'status-table',
-    props: ['compose', 'docker'],
-    components: {
-        Configuration,
-        Docker
-    },
-    methods: {
-        openWebPort() {
-            let port = this.compose.ports[1].split(":")[0];
-            shell.openExternal(`http://localhost:${port}`);
-        }
+  name: 'status-table',
+  props: ['compose', 'docker'],
+  components: {
+    Configuration,
+    Docker
+  },
+  methods: {
+    openWebPort () {
+      let port = this.compose.ports[1].split(':')[0]
+      shell.openExternal(`http://localhost:${port}`)
     }
+  }
 }
 </script>
 

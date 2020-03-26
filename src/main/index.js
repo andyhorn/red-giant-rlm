@@ -3,7 +3,7 @@
 import { app, BrowserWindow, screen } from 'electron'
 
 // Set up the necessary files and folders on the local system
-require('./helpers/SetUpFiles').default();
+require('./helpers/SetUpFiles').default()
 
 /**
  * Set `__static` path to static files in production
@@ -13,18 +13,18 @@ if (process.env.NODE_ENV !== 'development') {
   global.__static = require('path').join(__dirname, '/static').replace(/\\/g, '\\\\')
 }
 
-let mainWindow;
+let mainWindow
 
 const winURL = process.env.NODE_ENV === 'development'
   ? `http://localhost:9080`
   : `file://${__dirname}/index.html`
 
-function createWindow() {
+function createWindow () {
   /**
    * Initial window options
    */
 
-  let { width, height } = screen.getPrimaryDisplay().workAreaSize;
+  let { width, height } = screen.getPrimaryDisplay().workAreaSize
 
   mainWindow = new BrowserWindow({
     width: width,
@@ -34,15 +34,15 @@ function createWindow() {
       nodeIntegrationInWorker: true
     },
     show: false
-  });
+  })
 
   mainWindow.maximize()
 
   mainWindow.loadURL(winURL)
 
   // Initialize the request and response modules
-  require('./responses/response').init({ mainWindow });
-  require('./requests/request').default();
+  require('./responses/response').init({ mainWindow })
+  require('./requests/request').default()
 
   mainWindow.on('ready-to-show', () => {
     mainWindow.show()
@@ -67,7 +67,7 @@ app.on('activate', () => {
   }
 })
 
-app.allowRendererProcessReuse = false;
+app.allowRendererProcessReuse = false
 
 /**
  * Auto Updater

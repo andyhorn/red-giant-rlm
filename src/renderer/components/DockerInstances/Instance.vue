@@ -12,17 +12,17 @@
 </template>
 
 <script>
-const { ipcRenderer } = require('electron');
-const IPC = require('../../../main/contracts/Ipc');
+const { ipcRenderer } = require('electron')
+const IPC = require('../../../main/contracts/Ipc')
 
 export default {
-    name: 'instance',
-    props: ['container'],
-    methods: {
-        stop(id) {
-            ipcRenderer.send(IPC.STOP_DOCKER_REQUEST, { isName: false, id: id });
-        }
+  name: 'instance',
+  props: ['container'],
+  methods: {
+    stop (id) {
+      ipcRenderer.send(IPC.STOP_DOCKER_REQUEST, { isName: false, id: id })
     }
+  }
 }
 </script>
 

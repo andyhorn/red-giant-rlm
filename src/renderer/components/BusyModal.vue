@@ -17,31 +17,31 @@
 </template>
 
 <script>
-const { ipcRenderer } = require("electron");
-const IPC = require("../../main/contracts/Ipc");
-const MODAL_TIMEOUT = 3 * 60 * 1000;
+const { ipcRenderer } = require('electron')
+const IPC = require('../../main/contracts/Ipc')
+const MODAL_TIMEOUT = 3 * 60 * 1000
 
 export default {
-  name: "busy-modal",
+  name: 'busy-modal',
   methods: {
-    showModal() {
-      this.$refs.modal.show();
-      setTimeout(this.$refs.modal.hide, MODAL_TIMEOUT);
+    showModal () {
+      this.$refs.modal.show()
+      setTimeout(this.$refs.modal.hide, MODAL_TIMEOUT)
     },
-    hideModal() {
-      this.$refs.modal.hide();
+    hideModal () {
+      this.$refs.modal.hide()
     }
   },
-  mounted() {
-    let vm = this;
+  mounted () {
+    let vm = this
     ipcRenderer.on(IPC.SHOW_MODAL_EVENT, () => {
-      vm.showModal();
-    });
+      vm.showModal()
+    })
     ipcRenderer.on(IPC.HIDE_MODAL_EVENT, () => {
-      vm.hideModal();
-    });
+      vm.hideModal()
+    })
   }
-};
+}
 </script>
 
 <style scoped>
