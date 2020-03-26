@@ -1,7 +1,9 @@
 const { exec } = require('child_process');
 const Docker = require('dockerode');
+const FilePaths = require('../contracts/FilePaths');
 
-const BASE = "docker-compose -f C:\\RLM\\docker-compose.yml";
+// const BASE = "docker-compose -f C:\\RLM\\docker-compose.yml";
+const BASE = `docker-compose -f ${FilePaths.dockerComposeDest}`;
 const BUILD = BASE + " up -d --build";
 const STOP = BASE + " stop";
 
