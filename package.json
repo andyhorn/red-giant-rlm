@@ -1,6 +1,6 @@
 {
   "name": "red-giant-rlm-manager",
-  "version": "1.0.1",
+  "version": "1.1.1",
   "author": "andyhorn <andyjhorn@gmail.com>",
   "description": "A management utility for Dockerized instances of RLM",
   "license": "MIT",
@@ -27,23 +27,11 @@
     "files": [
       "dist/electron/**/*"
     ],
-    "dmg": {
-      "contents": [
-        {
-          "x": 410,
-          "y": 150,
-          "type": "link",
-          "path": "/Applications"
-        },
-        {
-          "x": 130,
-          "y": 150,
-          "type": "file"
-        }
-      ]
-    },
     "mac": {
-      "icon": "build/icons/icon.icns"
+      "icon": "build/icons/icon.icns",
+      "target": [
+        "pkg"
+      ]
     },
     "win": {
       "icon": "build/icons/icon.ico",
