@@ -2,6 +2,7 @@ const fs = require('fs');
 const FilePaths = require('../contracts/FilePaths');
 
 export default function(force = false) {
+    console.log("Installing local files...");
     makeDir(FilePaths.rlmDirPath);
     makeDir(FilePaths.licenseDirPath);
     makeDir(FilePaths.rlmAssetsDirPath);
