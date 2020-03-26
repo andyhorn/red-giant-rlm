@@ -12,7 +12,7 @@
     </thead>
     <tbody>
       <tr>
-        <td>{{ docker.Image }}</td>
+        <td>{{ serviceName }}</td>
         <td>{{ docker.State }}</td>
         <td>{{ docker.Status }}</td>
       </tr>
@@ -26,7 +26,12 @@
 <script>
 export default {
   name: "docker-status",
-  props: ["docker", "name"]
+  props: ["docker"],
+  computed: {
+    serviceName: function() {
+      return this.docker.Labels['com.docker.compose.service'];
+    }
+  }
 };
 </script>
 

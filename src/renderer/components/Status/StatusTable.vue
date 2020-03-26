@@ -1,6 +1,6 @@
 <template>
     <table class="table">
-        <Configuration :compose="compose" v-on:openWebPort="openWebPort"/>
+        <Configuration :compose="compose" @openWebPort="openWebPort"/>
         <Docker :docker="docker" />
     </table>    
 </template>
