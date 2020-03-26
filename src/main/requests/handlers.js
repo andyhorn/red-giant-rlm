@@ -199,8 +199,10 @@ export async function handleDockerServicesRequest() {
 
 export async function handleClientLicenseRequest(port) {
     console.log("Generating client license file");
-    let ip = await publicIp.v4();
-    let fileData = `HOST ${ip} ANY ${port}`;
+    // let ip = await publicIp.v4();
+    let hostname = require('os').hostname();
+    // let fileData = `HOST ${ip} ANY ${port}`;
+    let fileData = `HOST ${hostname} ANY ${port}`;
     FileManager.SaveFile('redgiant-client.primary.lic', fileData);
 }
 
